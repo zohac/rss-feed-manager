@@ -1,4 +1,4 @@
-// src/dtos/RSSFeedDTO.ts
+// src/application/dtos/RSSFeedDTO.ts
 import {
   IsString,
   IsUrl,

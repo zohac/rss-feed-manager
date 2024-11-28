@@ -2,10 +2,12 @@
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { Request, Response, NextFunction } from 'express';
-import { CreateRSSFeedDTO, UpdateRSSFeedDTO } from '../../application/dtos/RSSFeedDTO';
 
+import {
+  CreateRSSFeedDTO,
+  UpdateRSSFeedDTO,
+} from '../../application/dtos/RSSFeedDTO';
 import { RSSFeedUseCases } from '../../application/usecases/RSSFeedUseCases';
-import logger from '../../infrastructure/logger/logger';
 
 export class RSSFeedController {
   private readonly rssFeedUseCases: RSSFeedUseCases;
