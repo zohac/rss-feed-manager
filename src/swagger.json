@@ -1,0 +1,409 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API RSS Feed",
+    "version": "1.0.0",
+    "description": "API pour gérer des flux RSS et leurs collections"
+  },
+  "paths": {
+    "/api/feeds": {
+      "get": {
+        "summary": "Obtenir tous les flux RSS",
+        "responses": {
+          "200": {
+            "description": "Liste des flux RSS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RSSFeed"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Créer un nouveau flux RSS",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RSSFeedInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Flux RSS créé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RSSFeed"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/feeds/{id}": {
+      "get": {
+        "summary": "Obtenir un flux RSS par ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flux RSS trouvé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RSSFeed"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Flux RSS non trouvé"
+          }
+        }
+      },
+      "put": {
+        "summary": "Mettre à jour un flux RSS existant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RSSFeedInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Flux RSS mis à jour"
+          },
+          "404": {
+            "description": "Flux RSS non trouvé"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Supprimer un flux RSS",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Flux RSS supprimé"
+          },
+          "404": {
+            "description": "Flux RSS non trouvé"
+          }
+        }
+      }
+    },
+    "/api/collections": {
+      "get": {
+        "summary": "Obtenir toutes les collections",
+        "responses": {
+          "200": {
+            "description": "Liste des collections",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Collection"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Créer une nouvelle collection",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Collection créée",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Collection"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/collections/{id}": {
+      "get": {
+        "summary": "Obtenir une collection par ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Collection trouvée",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Collection"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Collection non trouvée"
+          }
+        }
+      },
+      "put": {
+        "summary": "Mettre à jour une collection existante",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Collection mise à jour"
+          },
+          "404": {
+            "description": "Collection non trouvée"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Supprimer une collection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Collection supprimée"
+          },
+          "404": {
+            "description": "Collection non trouvée"
+          }
+        }
+      }
+    },
+    "/api/articles/{id}": {
+      "put": {
+        "summary": "Mettre à jour les propriétés d'un article",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateArticleInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Article mis à jour avec succès"
+          },
+          "400": {
+            "description": "Requête invalide"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RSSFeed": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Mon flux RSS"
+          },
+          "url": {
+            "type": "string",
+            "example": "http://exemple.com/rss"
+          },
+          "description": {
+            "type": "string",
+            "example": "Description du flux"
+          },
+          "collection": {
+            "$ref": "#/components/schemas/Collection"
+          },
+          "articles": {
+            "$ref": "#/components/schemas/Article"
+          }
+        }
+      },
+      "RSSFeedInput": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Mon flux RSS"
+          },
+          "url": {
+            "type": "string",
+            "example": "http://exemple.com/rss"
+          },
+          "description": {
+            "type": "string",
+            "example": "Description du flux"
+          },
+          "collectionId": {
+            "type": "integer",
+            "example": 1
+          }
+        },
+        "required": ["title", "url"]
+      },
+      "Collection": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Technologie"
+          },
+          "description": {
+            "type": "string",
+            "example": "Collection de flux RSS liés à la technologie"
+          }
+        }
+      },
+      "CollectionInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Technologie"
+          },
+          "description": {
+            "type": "string",
+            "example": "Collection de flux RSS liés à la technologie"
+          }
+        },
+        "required": ["name"]
+      },
+      "Article": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "title": { "type": "string", "example": "Titre de l'article" },
+          "link": { "type": "string", "example": "http://exemple.com/article" },
+          "description": { "type": "string", "example": "Résumé de l'article" },
+          "publicationDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-01-01T12:00:00Z"
+          },
+          "isRead": { "type": "boolean", "example": false },
+          "isFavorite": { "type": "boolean", "example": false },
+          "isArchived": { "type": "boolean", "example": false },
+          "isSaved": { "type": "boolean", "example": false },
+          "feedId": { "type": "integer", "example": 1 }
+        }
+      },
+      "UpdateArticleInput": {
+        "type": "object",
+        "properties": {
+          "isRead": { "type": "boolean", "example": true },
+          "isFavorite": { "type": "boolean", "example": false },
+          "isArchived": { "type": "boolean", "example": false },
+          "isSaved": { "type": "boolean", "example": false }
+        }
+      }
+    }
+  }
+}
