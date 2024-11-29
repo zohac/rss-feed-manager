@@ -1,11 +1,5 @@
 // src/application/dtos/CollectionDTO.ts
-import {
-  IsString,
-  IsOptional,
-  IsNotEmpty,
-  IsNumber,
-  IsArray,
-} from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateCollectionDTO {
   @IsString()

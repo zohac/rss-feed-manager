@@ -1,5 +1,3 @@
-import Parser from 'rss-parser';
-
 import { RSSFeed } from '../../domain/entities/RSSFeed';
 import logger from '../../infrastructure/logger/logger';
 import { CollectionRepository } from '../../infrastructure/repositories/CollectionRepository';
@@ -7,20 +5,23 @@ import { RSSFeedRepository } from '../../infrastructure/repositories/RSSFeedRepo
 import { CreateRSSFeedDTO, UpdateRSSFeedDTO } from '../dtos/RSSFeedDTO';
 import { IUseCase } from '../interfaces/IUseCase';
 
+import { ParseFeedUseCase } from './ParseFeedUseCase';
+
 export class RSSFeedUseCases
   implements IUseCase<RSSFeed, CreateRSSFeedDTO, UpdateRSSFeedDTO>
 {
   private readonly repository: RSSFeedRepository;
   private readonly collectionRepository: CollectionRepository;
-  private readonly parser: Parser;
+  private readonly parseFeedUseCase: ParseFeedUseCase;
 
   constructor(
     repository: RSSFeedRepository,
     collectionRepository: CollectionRepository,
+    parseFeedUseCase: ParseFeedUseCase,
   ) {
     this.repository = repository;
     this.collectionRepository = collectionRepository;
-    this.parser = new Parser();
+    this.parseFeedUseCase = parseFeedUseCase;
   }
 
   async getAll(): Promise<RSSFeed[]> {
@@ -44,7 +45,11 @@ export class RSSFeedUseCases
       }
     }
 
-    return await this.repository.create(feed);
+    const feedCreated = await this.repository.create(feed);
+
+    await this.parseFeedUseCase.execute(feedCreated);
+
+    return feedCreated;
   }
 
   async update(feedDto: UpdateRSSFeedDTO): Promise<RSSFeed> {

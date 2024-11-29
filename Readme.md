@@ -15,9 +15,7 @@
     - [Configuration](#configuration)
     - [Running the Application](#running-the-application)
 - [API Documentation](#api-documentation)
-    - [Endpoints](#endpoints)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Description

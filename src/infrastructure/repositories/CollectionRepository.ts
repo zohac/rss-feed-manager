@@ -6,7 +6,6 @@ import { Collection } from '../../domain/entities/Collection';
 import { RSSFeed } from '../../domain/entities/RSSFeed';
 import { AppDataSource } from '../database/dataSource';
 import { CollectionEntity } from '../entities/CollectionEntity';
-import { RSSFeedEntity } from '../entities/RSSFeedEntity';
 import logger from '../logger/logger';
 
 export class CollectionRepository implements IRepository<Collection> {
