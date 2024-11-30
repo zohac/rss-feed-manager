@@ -26,6 +26,9 @@ export const DATABASE = {
   entities: [path.resolve(__dirname, '../entities/*.ts')],
 };
 
+// Default AI Prompt
+export const DEFAULT_ANALYSIS_PROMPT = `You are an AI content analyzer. Analyze the following article and respond with 'true' if it's about artificial intelligence, machine learning, or related technologies, and 'false' otherwise. Only respond with true or false.`;
+
 // Exporter toutes les configurations nécessaires
 export const config = {
   environment: {
@@ -43,5 +46,8 @@ export const config = {
   },
   ollama: {
     baseUrl: process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434',
+  },
+  ai: {
+    defaultAnalysisPrompt: DEFAULT_ANALYSIS_PROMPT,
   },
 };

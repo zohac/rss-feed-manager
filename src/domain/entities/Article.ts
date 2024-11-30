@@ -1,4 +1,4 @@
-// src/entities/Article.ts
+// src/domain/entities/Article.ts
 import { IEntity } from '../../application/interfaces/IEntity';
 
 import { RSSFeed } from './RSSFeed';

@@ -1,4 +1,4 @@
-// src/entities/Collection.ts
+// src/domain/entities/Collection.ts
 import { IEntity } from '../../application/interfaces/IEntity';
 
 import { RSSFeed } from './RSSFeed';

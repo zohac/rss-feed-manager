@@ -4,6 +4,7 @@ import cors from 'cors';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 
+import { AIAgentUseCases } from './application/usecases/AIAgentUseCases';
 import { ArticleUseCases } from './application/usecases/ArticleUseCases';
 import { CollectionUseCases } from './application/usecases/CollectionUseCases';
 import { ParseFeedUseCase } from './application/usecases/ParseFeedUseCase';
@@ -11,10 +12,12 @@ import { RSSFeedUseCases } from './application/usecases/RSSFeedUseCases';
 import { config } from './infrastructure/config/config';
 import { AppDataSource } from './infrastructure/database/dataSource';
 import logger from './infrastructure/logger/logger';
+import { AIAgentRepository } from './infrastructure/repositories/AIAgentRepository';
 import { ArticleRepository } from './infrastructure/repositories/ArticleRepository';
 import { CollectionRepository } from './infrastructure/repositories/CollectionRepository';
 import { RSSFeedRepository } from './infrastructure/repositories/RSSFeedRepository';
 import { CronService } from './infrastructure/services/CronService';
+import { AIAgentController } from './presentation/controllers/AIAgentController';
 import { ArticleController } from './presentation/controllers/ArticleController';
 import { CollectionController } from './presentation/controllers/CollectionController';
 import { RSSFeedController } from './presentation/controllers/RSSFeedController';
@@ -49,6 +52,7 @@ const startServer = async () => {
     const feedRepository = new RSSFeedRepository();
     const collectionRepository = new CollectionRepository();
     const articleRepository = new ArticleRepository();
+    const agentRepository = new AIAgentRepository();
 
     // Instancier les cas d'utilisation
     const parseFeedUseCase = new ParseFeedUseCase(articleRepository);
@@ -62,17 +66,23 @@ const startServer = async () => {
       articleRepository,
       feedRepository,
     );
+    const agentUseCases = new AIAgentUseCases(
+      agentRepository,
+      articleRepository,
+    );
 
     // Instancier les contrôleurs
     const feedController = new RSSFeedController(feedUseCases);
     const collectionController = new CollectionController(collectionUseCases);
     const articleController = new ArticleController(articleUseCases);
+    const agentController = new AIAgentController(agentUseCases);
 
     // Créer et utiliser les routes
     const router = createRouter(
       feedController,
       collectionController,
       articleController,
+      agentController,
     );
     app.use('/api', router);
 
