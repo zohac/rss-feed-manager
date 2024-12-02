@@ -150,21 +150,34 @@ http://localhost:3000/api-docs
 ```bash
 rss-feed-manager/
 ├── src/
-│   ├── controllers/
-│   │   ├── AIAgentController.ts
-│   │   ├── ArticleController.ts
-│   │   ├── CollectionController.ts
-│   │   └── RSSFeedController.ts
-│   ├── dtos/
-│   │   ├── ArticleDTO.ts
-│   │   ├── CollectionDTO.ts
-│   │   └── RSSFeedDTO.ts
-│   ├── entities/
-│   │   ├── AIAgent.ts
-│   │   ├── AIAnalysis.ts
-│   │   ├── Article.ts
-│   │   ├── Collection.ts
-│   │   └── RSSFeed.ts
+│   ├── application/
+│   │   ├── dtos/
+│   │   │   ├── AIAgentDTO.ts
+│   │   │   ├── AIConfigurationDTO.ts
+│   │   │   ├── ArticleDTO.ts
+│   │   │   ├── CollectionDTO.ts
+│   │   │   └── RSSFeedDTO.ts
+│   │   ├── interfaces/
+│   │   │   ├── IAISErvice.ts
+│   │   │   ├── IEntity.ts
+│   │   │   ├── IRepository.ts
+│   │   │   ├── IServiceFactory.ts
+│   │   │   └── IUseCases.ts
+│   │   └── usecases/
+│   │       ├── AIAgentUseCases.ts
+│   │       ├── AIAnalysisUseCases.ts
+│   │       ├── ArticleUseCases.ts
+│   │       ├── CollectionUseCases.ts
+│   │       ├── ParseFeedUseCases.ts
+│   │       └── RSSFeedUseCases.ts
+│   ├── domain/
+│   │   └── entities/
+│   │       ├── AIAgent.ts
+│   │       ├── AIAnalysis.ts
+│   │       ├── AIConfiguration.ts
+│   │       ├── Article.ts
+│   │       ├── Collection.ts
+│   │       └── RSSFeed.ts
 │   ├── infrastructure/
 │   │   ├── Config/
 │   │   │   ├── config.ts
@@ -173,36 +186,59 @@ rss-feed-manager/
 │   │   ├── entities/
 │   │   │   ├── AIAgentEntity.ts
 │   │   │   ├── AIAnalysisEntity.ts
+│   │   │   ├── AIConfigurationEntity.ts
 │   │   │   ├── ArticleEntity.ts
 │   │   │   ├── CollectionEntity.ts
 │   │   │   └── RSSFeedEntity.ts
 │   │   ├── integrations/
+│   │   │   └── AIServiceFactory.ts
+│   │   ├── integrations/
 │   │   │   └── OllamaService.ts
 │   │   ├── logger/
-│   │   │   ├── logger.ts
+│   │   │   └── logger.ts
+│   │   ├── mappers/
+│   │   │   ├── AIAgentMapper.ts
+│   │   │   ├── AIAnalysisMapper.ts
+│   │   │   ├── AIConfigurationMapper.ts
+│   │   │   ├── ArticleMapper.ts
+│   │   │   ├── CollectionMapper.ts
+│   │   │   └── RSSFeedMapper.ts
 │   │   └── repositories/
-│   │       ├── AIAgentRepository.ts
-│   │       ├── ArticleRepository.ts
-│   │       ├── CollectionRepository.ts
-│   │       └── RSSFeedRepository.ts
-│   ├── middlewares/
-│   │   ├── errorHandler.ts
-│   │   └── routeNotFound.ts
-│   ├── routes/
-│   │   └── index.ts
-│   ├── services/
-│   │   └── CronService.ts
-│   ├── swagger.json
-│   ├── usecases/
-│   │   ├── AIAgentUseCases.ts
-│   │   ├── ArticleUseCases.ts
-│   │   ├── CollectionUseCases.ts
-│   │   └── RSSFeedUseCases.ts
+│   │   │   ├── AIAgentRepository.ts
+│   │   │   ├── AIAnalysisRepository.ts
+│   │   │   ├── ArticleRepository.ts
+│   │   │   ├── CollectionRepository.ts
+│   │   │   └── RSSFeedRepository.ts
+│   │   └── services/
+│   │       └── CronService.ts
+│   ├── presentation/
+│   │   ├── controllers/
+│   │   │   ├── AIAgentController.ts
+│   │   │   ├── AIAnalysisController.ts
+│   │   │   ├── ArticleController.ts
+│   │   │   ├── CollectionController.ts
+│   │   │   └── RSSFeedController.ts
+│   │   ├── middlewares/
+│   │   │   ├── errorHandler.ts
+│   │   │   └── routeNotFound.ts
+│   │   └── routes/
+│   │       ├── agent.ts
+│   │       ├── analysis.ts
+│   │       ├── articles.ts
+│   │       ├── collections.ts
+│   │       ├── feeds.ts
+│   │       └── index.ts
+│   ├── utils/
+│   │   └── stringUtils.ts
 │   ├── index.ts
 │   └── swagger.json
 ├── .env
 ├── .env.dist
 ├── .gitignore
+├── .prettierignore
+├── .prettierrc
+├── eslint.config.js
+├── LICENCE
 ├── nodemon.json
 ├── package.json
 ├── pnpm-lock.yaml
