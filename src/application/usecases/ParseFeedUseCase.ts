@@ -37,6 +37,7 @@ export class ParseFeedUseCase {
             false, // isSaved
             feed, // feed
             ArticleSourceType.RSS,
+            undefined, // Analysis
             item.link ?? '',
             item.contentSnippet ?? '',
           );

@@ -31,6 +31,7 @@ export class AIAgentEntity {
     cascade: true,
     eager: true,
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn()
   configuration!: AIConfigurationEntity;

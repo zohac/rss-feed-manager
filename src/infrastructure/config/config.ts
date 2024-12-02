@@ -27,7 +27,7 @@ export const DATABASE = {
 };
 
 // Default AI Prompt
-export const DEFAULT_ANALYSIS_PROMPT = `You are an AI content analyzer. Analyze the following article and respond with 'true' if it's about artificial intelligence, machine learning, or related technologies, and 'false' otherwise. Only respond with true or false.`;
+export const DEFAULT_ANALYSIS_PROMPT = `You are an AI content analyzer. Analyze the following article and respond with 'true' if it's about artificial intelligence, machine learning, or related technologies, and 'false' otherwise. Only respond with true or false. ### Title: {{title}} --- Content: {{description}} ### Only respond with true or false, it's very important.`;
 
 // Exporter toutes les configurations nécessaires
 export const config = {

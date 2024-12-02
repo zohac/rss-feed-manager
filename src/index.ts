@@ -5,19 +5,23 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 
 import { AIAgentUseCases } from './application/usecases/AIAgentUseCases';
+import { AIAnalysisUseCase } from './application/usecases/AIAnalysisUseCase';
 import { ArticleUseCases } from './application/usecases/ArticleUseCases';
 import { CollectionUseCases } from './application/usecases/CollectionUseCases';
 import { ParseFeedUseCase } from './application/usecases/ParseFeedUseCase';
 import { RSSFeedUseCases } from './application/usecases/RSSFeedUseCases';
 import { config } from './infrastructure/config/config';
 import { AppDataSource } from './infrastructure/database/dataSource';
+import { AIServiceFactory } from './infrastructure/factories/AIServiceFactory';
 import logger from './infrastructure/logger/logger';
 import { AIAgentRepository } from './infrastructure/repositories/AIAgentRepository';
+import { AIAnalysisRepository } from './infrastructure/repositories/AIAnalysisRepository';
 import { ArticleRepository } from './infrastructure/repositories/ArticleRepository';
 import { CollectionRepository } from './infrastructure/repositories/CollectionRepository';
 import { RSSFeedRepository } from './infrastructure/repositories/RSSFeedRepository';
 import { CronService } from './infrastructure/services/CronService';
 import { AIAgentController } from './presentation/controllers/AIAgentController';
+import { AIAnalysisController } from './presentation/controllers/AIAnalysisController';
 import { ArticleController } from './presentation/controllers/ArticleController';
 import { CollectionController } from './presentation/controllers/CollectionController';
 import { RSSFeedController } from './presentation/controllers/RSSFeedController';
@@ -53,6 +57,10 @@ const startServer = async () => {
     const collectionRepository = new CollectionRepository();
     const articleRepository = new ArticleRepository();
     const agentRepository = new AIAgentRepository();
+    const analysisRepository = new AIAnalysisRepository();
+
+    // Instancier les Factory
+    const aiServiceFactory = new AIServiceFactory();
 
     // Instancier les cas d'utilisation
     const parseFeedUseCase = new ParseFeedUseCase(articleRepository);
@@ -70,12 +78,19 @@ const startServer = async () => {
       agentRepository,
       articleRepository,
     );
+    const analysisUseCases = new AIAnalysisUseCase(
+      aiServiceFactory,
+      analysisRepository,
+      articleRepository,
+      agentRepository,
+    );
 
     // Instancier les contrôleurs
     const feedController = new RSSFeedController(feedUseCases);
     const collectionController = new CollectionController(collectionUseCases);
     const articleController = new ArticleController(articleUseCases);
     const agentController = new AIAgentController(agentUseCases);
+    const analysisController = new AIAnalysisController(analysisUseCases);
 
     // Créer et utiliser les routes
     const router = createRouter(
@@ -83,6 +98,7 @@ const startServer = async () => {
       collectionController,
       articleController,
       agentController,
+      analysisController,
     );
     app.use('/api', router);
 
@@ -91,6 +107,7 @@ const startServer = async () => {
       feedUseCases,
       parseFeedUseCase,
       articleUseCases,
+      analysisUseCases,
     );
     cronService.start();
     logger.info('CRON démarré');

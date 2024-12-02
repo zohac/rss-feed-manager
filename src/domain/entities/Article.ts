@@ -1,6 +1,7 @@
 // src/domain/entities/Article.ts
 import { IEntity } from '../../application/interfaces/IEntity';
 
+import { AIAnalysis } from './AIAnalysis';
 import { RSSFeed } from './RSSFeed';
 
 export enum ArticleSourceType {
@@ -19,6 +20,7 @@ export class Article implements IEntity {
     public isSaved: boolean,
     public feed: RSSFeed | undefined,
     public sourceType: ArticleSourceType,
+    public analysis?: AIAnalysis[],
     public link?: string,
     public description?: string,
     public content?: string,

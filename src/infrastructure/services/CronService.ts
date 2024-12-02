@@ -1,6 +1,7 @@
 // src/services/CronService.ts
 import cron from 'node-cron';
 
+import { AIAnalysisUseCase } from '../../application/usecases/AIAnalysisUseCase';
 import { ArticleUseCases } from '../../application/usecases/ArticleUseCases';
 import { ParseFeedUseCase } from '../../application/usecases/ParseFeedUseCase';
 import { RSSFeedUseCases } from '../../application/usecases/RSSFeedUseCases';
@@ -10,15 +11,18 @@ export class CronService {
   private readonly rssFeedUseCases: RSSFeedUseCases;
   private readonly parseFeedUseCase: ParseFeedUseCase;
   private readonly articlesUseCase: ArticleUseCases;
+  private readonly analysisUseCase: AIAnalysisUseCase;
 
   constructor(
     rssFeedUseCases: RSSFeedUseCases,
     parseFeedUseCase: ParseFeedUseCase,
     articlesUseCase: ArticleUseCases,
+    analysisUseCase: AIAnalysisUseCase,
   ) {
     this.rssFeedUseCases = rssFeedUseCases;
     this.parseFeedUseCase = parseFeedUseCase;
     this.articlesUseCase = articlesUseCase;
+    this.analysisUseCase = analysisUseCase;
   }
 
   start() {
@@ -56,6 +60,24 @@ export class CronService {
       } catch (error) {
         logger.error(
           'Erreur lors de la suppression des anciens articles:',
+          error,
+        );
+      }
+    });
+
+    // Nouvelle tâche pour analyser les articles avec les agents IA
+    cron.schedule('*/60 * * * *', async () => {
+      logger.info(
+        'Démarrage de la tâche planifiée pour analyser les articles avec les agents IA.',
+      );
+      try {
+        await this.analysisUseCase.analysisAll();
+        logger.info(
+          'Analyse de la tâche planifiée pour tous des articles par tous les agents IA terminée.',
+        );
+      } catch (error) {
+        logger.error(
+          "Erreur lors de l'analyse des articles avec les agents IA:",
           error,
         );
       }

@@ -1,8 +1,16 @@
 // src/infrastructure/entities/ArticleEntity.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
+import { AIAnalysis } from '../../domain/entities/AIAnalysis';
 import { ArticleSourceType } from '../../domain/entities/Article';
 
+import { AIAnalysisEntity } from './AIAnalysisEntity';
 import { RSSFeedEntity } from './RSSFeedEntity';
 
 @Entity()
@@ -44,6 +52,15 @@ export class ArticleEntity {
     onDelete: 'CASCADE',
   })
   feed!: RSSFeedEntity;
+
+  @OneToMany(
+    () => AIAnalysisEntity,
+    (aiAnalysisEntity) => aiAnalysisEntity.article,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
+  analysis?: AIAnalysisEntity[];
 
   @Column()
   sourceType!: ArticleSourceType;

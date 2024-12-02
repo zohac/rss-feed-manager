@@ -3,10 +3,10 @@ import { Repository } from 'typeorm';
 
 import { IRepository } from '../../application/interfaces/IRepository';
 import { Collection } from '../../domain/entities/Collection';
-import { RSSFeed } from '../../domain/entities/RSSFeed';
 import { AppDataSource } from '../database/dataSource';
 import { CollectionEntity } from '../entities/CollectionEntity';
 import logger from '../logger/logger';
+import { CollectionMapper } from '../mappers/CollectionMapper';
 
 export class CollectionRepository implements IRepository<Collection> {
   private readonly collectionRepository: Repository<CollectionEntity>;
@@ -19,7 +19,7 @@ export class CollectionRepository implements IRepository<Collection> {
     const entities = await this.collectionRepository.find({
       relations: ['feeds'],
     });
-    return entities.map((entity) => this.createCollection(entity));
+    return entities.map((entity) => CollectionMapper.toDomain(entity));
   }
 
   async getOneById(id: number): Promise<Collection | null> {
@@ -29,15 +29,15 @@ export class CollectionRepository implements IRepository<Collection> {
     });
     if (!entity) return null;
 
-    return this.createCollection(entity);
+    return CollectionMapper.toDomain(entity);
   }
 
   async create(collection: Collection): Promise<Collection> {
-    const collectionEntity = this.createCollectionEntity(collection);
+    const collectionEntity = CollectionMapper.toEntity(collection);
     const entity = this.collectionRepository.create(collectionEntity);
     const result = await this.collectionRepository.save(entity);
 
-    return this.createCollection(result);
+    return CollectionMapper.toDomain(result);
   }
 
   async update(collection: Collection): Promise<Collection> {
@@ -48,7 +48,7 @@ export class CollectionRepository implements IRepository<Collection> {
       throw new Error(errorMessage);
     }
 
-    const collectionEntity = this.createCollectionEntity(collection);
+    const collectionEntity = CollectionMapper.toEntity(collection);
     await this.collectionRepository.update(
       collectionEntity.id,
       collectionEntity,
@@ -67,37 +67,5 @@ export class CollectionRepository implements IRepository<Collection> {
 
   async delete(id: number): Promise<void> {
     await this.collectionRepository.delete(id);
-  }
-
-  private createCollection(collectionEntity: CollectionEntity): Collection {
-    const collection = new Collection(
-      collectionEntity.id,
-      collectionEntity.name,
-      collectionEntity.description,
-    );
-
-    if (undefined !== collectionEntity.feeds) {
-      collection.feeds = collectionEntity.feeds.map(
-        (entity) =>
-          new RSSFeed(
-            entity.id,
-            entity.title,
-            entity.title,
-            entity.description,
-          ),
-      );
-    }
-
-    return collection;
-  }
-
-  private createCollectionEntity(collection: Collection): CollectionEntity {
-    const collectionEntity = new CollectionEntity();
-
-    if (undefined !== collection.id) collectionEntity.id = collection.id;
-    collectionEntity.name = collection.name;
-    collectionEntity.description = collection.description;
-
-    return collectionEntity;
   }
 }
