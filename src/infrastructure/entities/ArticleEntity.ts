@@ -7,7 +7,6 @@ import {
   OneToMany,
 } from 'typeorm';
 
-import { AIAnalysis } from '../../domain/entities/AIAnalysis';
 import { ArticleSourceType } from '../../domain/entities/Article';
 
 import { AIAnalysisEntity } from './AIAnalysisEntity';

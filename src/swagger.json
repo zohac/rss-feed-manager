@@ -3,11 +3,12 @@
   "info": {
     "title": "API RSS Feed",
     "version": "1.0.0",
-    "description": "API pour gérer des flux RSS et leurs collections"
+    "description": "API pour gérer des flux RSS, des articles, des collections, des agents IA et les analyses IA associées."
   },
   "paths": {
     "/api/feeds": {
       "get": {
+        "tags": ["RSS Feeds"],
         "summary": "Obtenir tous les flux RSS",
         "responses": {
           "200": {
@@ -16,9 +17,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RSSFeed"
-                  }
+                  "items": { "$ref": "#/components/schemas/RSSFeed" }
                 }
               }
             }
@@ -26,14 +25,13 @@
         }
       },
       "post": {
+        "tags": ["RSS Feeds"],
         "summary": "Créer un nouveau flux RSS",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RSSFeedInput"
-              }
+              "schema": { "$ref": "#/components/schemas/RSSFeedInput" }
             }
           }
         },
@@ -42,9 +40,7 @@
             "description": "Flux RSS créé",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RSSFeed"
-                }
+                "schema": { "$ref": "#/components/schemas/RSSFeed" }
               }
             }
           }
@@ -53,88 +49,57 @@
     },
     "/api/feeds/{id}": {
       "get": {
+        "tags": ["RSS Feeds"],
         "summary": "Obtenir un flux RSS par ID",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
+          { "$ref": "#/components/parameters/IdParam" }
         ],
         "responses": {
           "200": {
             "description": "Flux RSS trouvé",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RSSFeed"
-                }
+                "schema": { "$ref": "#/components/schemas/RSSFeed" }
               }
             }
           },
-          "404": {
-            "description": "Flux RSS non trouvé"
-          }
+          "404": { "description": "Flux RSS non trouvé" }
         }
       },
       "put": {
+        "tags": ["RSS Feeds"],
         "summary": "Mettre à jour un flux RSS existant",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
+          { "$ref": "#/components/parameters/IdParam" }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RSSFeedInput"
-              }
+              "schema": { "$ref": "#/components/schemas/RSSFeedInput" }
             }
           }
         },
         "responses": {
-          "204": {
-            "description": "Flux RSS mis à jour"
-          },
-          "404": {
-            "description": "Flux RSS non trouvé"
-          }
+          "204": { "description": "Flux RSS mis à jour" },
+          "404": { "description": "Flux RSS non trouvé" }
         }
       },
       "delete": {
+        "tags": ["RSS Feeds"],
         "summary": "Supprimer un flux RSS",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
+          { "$ref": "#/components/parameters/IdParam" }
         ],
         "responses": {
-          "204": {
-            "description": "Flux RSS supprimé"
-          },
-          "404": {
-            "description": "Flux RSS non trouvé"
-          }
+          "204": { "description": "Flux RSS supprimé" },
+          "404": { "description": "Flux RSS non trouvé" }
         }
       }
     },
     "/api/collections": {
       "get": {
+        "tags": ["RSS Feeds Collections"],
         "summary": "Obtenir toutes les collections",
         "responses": {
           "200": {
@@ -143,9 +108,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Collection"
-                  }
+                  "items": { "$ref": "#/components/schemas/Collection" }
                 }
               }
             }
@@ -153,14 +116,13 @@
         }
       },
       "post": {
+        "tags": ["RSS Feeds Collections"],
         "summary": "Créer une nouvelle collection",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionInput"
-              }
+              "schema": { "$ref": "#/components/schemas/CollectionInput" }
             }
           }
         },
@@ -169,9 +131,7 @@
             "description": "Collection créée",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Collection"
-                }
+                "schema": { "$ref": "#/components/schemas/Collection" }
               }
             }
           }
@@ -180,199 +140,427 @@
     },
     "/api/collections/{id}": {
       "get": {
+        "tags": ["RSS Feeds Collections"],
         "summary": "Obtenir une collection par ID",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
+          { "$ref": "#/components/parameters/IdParam" }
         ],
         "responses": {
           "200": {
             "description": "Collection trouvée",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Collection"
-                }
+                "schema": { "$ref": "#/components/schemas/Collection" }
               }
             }
           },
-          "404": {
-            "description": "Collection non trouvée"
-          }
+          "404": { "description": "Collection non trouvée" }
         }
       },
       "put": {
+        "tags": ["RSS Feeds Collections"],
         "summary": "Mettre à jour une collection existante",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
+          { "$ref": "#/components/parameters/IdParam" }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionInput"
-              }
+              "schema": { "$ref": "#/components/schemas/CollectionInput" }
             }
           }
         },
         "responses": {
-          "204": {
-            "description": "Collection mise à jour"
-          },
-          "404": {
-            "description": "Collection non trouvée"
-          }
+          "204": { "description": "Collection mise à jour" },
+          "404": { "description": "Collection non trouvée" }
         }
       },
       "delete": {
+        "tags": ["RSS Feeds Collections"],
         "summary": "Supprimer une collection",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
+          { "$ref": "#/components/parameters/IdParam" }
         ],
         "responses": {
-          "204": {
-            "description": "Collection supprimée"
-          },
-          "404": {
-            "description": "Collection non trouvée"
+          "204": { "description": "Collection supprimée" },
+          "404": { "description": "Collection non trouvée" }
+        }
+      }
+    },
+    "/api/articles": {
+      "get": {
+        "tags": ["Articles"],
+        "summary": "Obtenir tous les articles",
+        "responses": {
+          "200": {
+            "description": "Liste des articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Article" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Articles"],
+        "summary": "Créer un nouvel article",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ArticleInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Article créé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Article" }
+              }
+            }
           }
         }
       }
     },
     "/api/articles/{id}": {
-      "put": {
-        "summary": "Mettre à jour les propriétés d'un article",
+      "get": {
+        "tags": ["Articles"],
+        "summary": "Obtenir un article par ID",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article trouvé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Article" }
+              }
             }
-          }
+          },
+          "404": { "description": "Article non trouvé" }
+        }
+      },
+      "put": {
+        "tags": ["Articles"],
+        "summary": "Mettre à jour un article existant",
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateArticleInput"
-              }
+              "schema": { "$ref": "#/components/schemas/UpdateArticleInput" }
             }
           }
         },
         "responses": {
-          "204": {
-            "description": "Article mis à jour avec succès"
-          },
-          "400": {
-            "description": "Requête invalide"
+          "204": { "description": "Article mis à jour" },
+          "404": { "description": "Article non trouvé" }
+        }
+      },
+      "delete": {
+        "tags": ["Articles"],
+        "summary": "Supprimer un article",
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "204": { "description": "Article supprimé" },
+          "404": { "description": "Article non trouvé" }
+        }
+      }
+    },
+    "/api/articles/feeds/{feedId}": {
+      "get": {
+        "tags": ["Articles"],
+        "summary": "Obtenir les articles d'un flux spécifique",
+        "parameters": [
+          {
+            "name": "feedId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des articles du flux",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Article" }
+                }
+              }
+            }
+          },
+          "404": { "description": "Flux RSS non trouvé" }
+        }
+      }
+    },
+    "/api/agents": {
+      "get": {
+        "tags": ["AI Agent"],
+        "summary": "Obtenir tous les agents IA",
+        "responses": {
+          "200": {
+            "description": "Liste des agents IA",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/AIAgent" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["AI Agent"],
+        "summary": "Créer un nouvel agent IA",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AIAgentInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Agent IA créé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AIAgent" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/agents/{id}": {
+      "get": {
+        "tags": ["AI Agent"],
+        "summary": "Obtenir un agent IA par ID",
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agent IA trouvé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AIAgent" }
+              }
+            }
+          },
+          "404": { "description": "Agent IA non trouvé" }
+        }
+      },
+      "put": {
+        "tags": ["AI Agent"],
+        "summary": "Mettre à jour un agent IA existant",
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AIAgentInput" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "description": "Agent IA mis à jour" },
+          "404": { "description": "Agent IA non trouvé" }
+        }
+      },
+      "delete": {
+        "tags": ["AI Agent"],
+        "summary": "Supprimer un agent IA",
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "204": { "description": "Agent IA supprimé" },
+          "404": { "description": "Agent IA non trouvé" }
+        }
+      }
+    },
+    "/api/analysis": {
+      "post": {
+        "tags": ["AI Analysis"],
+        "summary": "Analyser tous les articles non analysés avec tous les agents IA",
+        "responses": {
+          "200": {
+            "description": "Analyse lancée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/AIAnalysis" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["AI Analysis"],
+        "summary": "Obtenir toutes les analyses IA",
+        "responses": {
+          "200": {
+            "description": "Liste des analyses IA",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/AIAnalysis" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analysis/{id}": {
+      "get": {
+        "tags": ["AI Analysis"],
+        "summary": "Obtenir une analyse IA par ID",
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analyse IA trouvée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AIAnalysis" }
+              }
+            }
+          },
+          "404": { "description": "Analyse IA non trouvée" }
+        }
+      }
+    },
+    "/api/analysis/agent/{agentId}": {
+      "post": {
+        "tags": ["AI Analysis"],
+        "summary": "Analyser tous les articles non analysés avec un agent IA spécifique",
+        "parameters": [
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analyse lancée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/AIAnalysis" }
+                }
+              }
+            }
+          },
+          "404": { "description": "Agent IA non trouvé" }
+        }
+      }
+    },
+    "/api/analysis/agent/{agentId}/article/{articleId}": {
+      "post": {
+        "tags": ["AI Analysis"],
+        "summary": "Analyser un article spécifique avec un agent IA spécifique",
+        "parameters": [
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analyse lancée avec succès",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AIAnalysis" }
+              }
+            }
+          },
+          "404": { "description": "Agent IA ou article non trouvé" }
         }
       }
     }
   },
   "components": {
+    "parameters": {
+      "IdParam": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "integer" }
+      }
+    },
     "schemas": {
       "RSSFeed": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "example": 1
-          },
-          "title": {
-            "type": "string",
-            "example": "Mon flux RSS"
-          },
-          "url": {
-            "type": "string",
-            "example": "http://exemple.com/rss"
-          },
-          "description": {
-            "type": "string",
-            "example": "Description du flux"
-          },
-          "collection": {
-            "$ref": "#/components/schemas/Collection"
-          },
+          "id": { "type": "integer", "example": 1 },
+          "title": { "type": "string", "example": "Mon flux RSS" },
+          "url": { "type": "string", "example": "http://exemple.com/rss" },
+          "description": { "type": "string", "example": "Description du flux" },
+          "collection": { "$ref": "#/components/schemas/Collection" },
           "articles": {
-            "$ref": "#/components/schemas/Article"
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Article" }
           }
         }
       },
       "RSSFeedInput": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "example": "Mon flux RSS"
-          },
-          "url": {
-            "type": "string",
-            "example": "http://exemple.com/rss"
-          },
-          "description": {
-            "type": "string",
-            "example": "Description du flux"
-          },
-          "collectionId": {
-            "type": "integer",
-            "example": 1
-          }
+          "title": { "type": "string", "example": "Mon flux RSS" },
+          "url": { "type": "string", "example": "http://exemple.com/rss" },
+          "description": { "type": "string", "example": "Description du flux" },
+          "collectionId": { "type": "integer", "example": 1 }
         },
         "required": ["title", "url"]
       },
       "Collection": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "example": 1
-          },
-          "name": {
-            "type": "string",
-            "example": "Technologie"
-          },
-          "description": {
-            "type": "string",
-            "example": "Collection de flux RSS liés à la technologie"
-          }
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "Technologie" },
+          "description": { "type": "string", "example": "Collection de flux RSS liés à la technologie" }
         }
       },
       "CollectionInput": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "example": "Technologie"
-          },
-          "description": {
-            "type": "string",
-            "example": "Collection de flux RSS liés à la technologie"
-          }
+          "name": { "type": "string", "example": "Technologie" },
+          "description": { "type": "string", "example": "Collection de flux RSS liés à la technologie" }
         },
         "required": ["name"]
       },
@@ -383,17 +571,30 @@
           "title": { "type": "string", "example": "Titre de l'article" },
           "link": { "type": "string", "example": "http://exemple.com/article" },
           "description": { "type": "string", "example": "Résumé de l'article" },
-          "publicationDate": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2021-01-01T12:00:00Z"
-          },
+          "content": { "type": "string", "example": "Contenu de l'article" },
+          "publicationDate": { "type": "string", "format": "date-time", "example": "2021-01-01T12:00:00Z" },
           "isRead": { "type": "boolean", "example": false },
           "isFavorite": { "type": "boolean", "example": false },
           "isArchived": { "type": "boolean", "example": false },
           "isSaved": { "type": "boolean", "example": false },
-          "feedId": { "type": "integer", "example": 1 }
+          "feed": { "$ref": "#/components/schemas/RSSFeed" },
+          "sourceType": { "type": "string", "enum": ["manual", "rss"], "example": "rss" },
+          "tag": { "type": "string", "example": "tech" }
         }
+      },
+      "ArticleInput": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "example": "Titre de l'article" },
+          "link": { "type": "string", "example": "http://exemple.com/article" },
+          "description": { "type": "string", "example": "Résumé de l'article" },
+          "content": { "type": "string", "example": "Contenu de l'article" },
+          "publicationDate": { "type": "string", "format": "date-time", "example": "2021-01-01T12:00:00Z" },
+          "feedId": { "type": "integer", "example": 1 },
+          "sourceType": { "type": "string", "enum": ["manual", "rss"], "example": "rss" },
+          "tag": { "type": "string", "example": "tech" }
+        },
+        "required": ["title", "link"]
       },
       "UpdateArticleInput": {
         "type": "object",
@@ -401,7 +602,60 @@
           "isRead": { "type": "boolean", "example": true },
           "isFavorite": { "type": "boolean", "example": false },
           "isArchived": { "type": "boolean", "example": false },
-          "isSaved": { "type": "boolean", "example": false }
+          "isSaved": { "type": "boolean", "example": false },
+          "tag": { "type": "string", "example": "tech" }
+        }
+      },
+      "AIAgent": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "Agent IA 1" },
+          "description": { "type": "string", "example": "Analyseur d'articles technologiques" },
+          "provider": { "type": "string", "enum": ["ollama", "claude"], "example": "ollama" },
+          "role": { "type": "string", "enum": ["ANALYSIS", "SUMMARIZER"], "example": "ANALYSIS" },
+          "configuration": { "$ref": "#/components/schemas/AIConfiguration" }
+        }
+      },
+      "AIAgentInput": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "Agent IA 1" },
+          "description": { "type": "string", "example": "Analyseur d'articles technologiques" },
+          "provider": { "type": "string", "enum": ["ollama", "claude"], "example": "ollama" },
+          "role": { "type": "string", "enum": ["ANALYSIS", "SUMMARIZER"], "example": "ANALYSIS" },
+          "configuration": { "$ref": "#/components/schemas/AIConfigurationInput" }
+        },
+        "required": ["name", "provider", "role", "configuration"]
+      },
+      "AIConfiguration": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "model": { "type": "string", "example": "gpt-3.5-turbo" },
+          "prompt": { "type": "string", "example": "Analyse l'article suivant..." },
+          "stream": { "type": "boolean", "example": false },
+          "temperature": { "type": "number", "format": "float", "example": 0.7 }
+        }
+      },
+      "AIConfigurationInput": {
+        "type": "object",
+        "properties": {
+          "model": { "type": "string", "example": "gpt-3.5-turbo" },
+          "prompt": { "type": "string", "example": "Analyse l'article suivant..." },
+          "stream": { "type": "boolean", "example": false },
+          "temperature": { "type": "number", "format": "float", "example": 0.7 }
+        },
+        "required": ["model", "prompt"]
+      },
+      "AIAnalysis": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "article": { "$ref": "#/components/schemas/Article" },
+          "agent": { "$ref": "#/components/schemas/AIAgent" },
+          "isRelevant": { "type": "boolean", "example": true },
+          "analysisDate": { "type": "string", "format": "date-time", "example": "2023-10-10T12:00:00Z" }
         }
       }
     }
