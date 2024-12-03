@@ -10,6 +10,7 @@ import {
 import { ArticleSourceType } from '../../domain/entities/Article';
 
 import { AIAnalysisEntity } from './AIAnalysisEntity';
+import { ArticleCollectionEntity } from './ArticleCollectionEntity';
 import { RSSFeedEntity } from './RSSFeedEntity';
 
 @Entity()
@@ -63,4 +64,14 @@ export class ArticleEntity {
 
   @Column()
   sourceType!: ArticleSourceType;
+
+  @ManyToOne(
+    () => ArticleCollectionEntity,
+    (collectionEntity) => collectionEntity.articles,
+    {
+      nullable: true,
+      onDelete: 'SET NULL',
+    },
+  )
+  collection?: ArticleCollectionEntity | null;
 }

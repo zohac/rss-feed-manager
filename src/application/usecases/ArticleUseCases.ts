@@ -2,8 +2,8 @@
 
 import { Article, ArticleSourceType } from '../../domain/entities/Article';
 import logger from '../../infrastructure/logger/logger';
+import { ArticleCollectionRepository } from '../../infrastructure/repositories/ArticleCollectionRepository';
 import { ArticleRepository } from '../../infrastructure/repositories/ArticleRepository';
-import { RSSFeedRepository } from '../../infrastructure/repositories/RSSFeedRepository';
 import { CreateArticleDTO, UpdateArticleDTO } from '../dtos/ArticleDTO';
 import { IUseCase } from '../interfaces/IUseCase';
 
@@ -11,14 +11,14 @@ export class ArticleUseCases
   implements IUseCase<Article, CreateArticleDTO, UpdateArticleDTO>
 {
   private readonly articleRepository: ArticleRepository;
-  private readonly rssFeedRepository: RSSFeedRepository;
+  private readonly collectionRepository: ArticleCollectionRepository;
 
   constructor(
     articleRepository: ArticleRepository,
-    rssFeedRepository: RSSFeedRepository,
+    collectionRepository: ArticleCollectionRepository,
   ) {
     this.articleRepository = articleRepository;
-    this.rssFeedRepository = rssFeedRepository;
+    this.collectionRepository = collectionRepository;
   }
 
   async create(articleDTO: CreateArticleDTO): Promise<Article> {
@@ -48,6 +48,16 @@ export class ArticleUseCases
       articleDTO.content,
     );
 
+    if (undefined !== articleDTO.collectionId) {
+      const collection = await this.collectionRepository.getOneById(
+        articleDTO.collectionId,
+      );
+
+      if (null !== collection) {
+        article.collection = collection;
+      }
+    }
+
     return await this.articleRepository.create(article);
   }
 
@@ -65,6 +75,7 @@ export class ArticleUseCases
 
   async update(articleDto: UpdateArticleDTO): Promise<Article> {
     const article = await this.articleRepository.getOneById(articleDto.id);
+
     if (!article) {
       const errorMessage =
         "Une erreur est survenu lors de la mise à jour à jour de l'article";
@@ -83,6 +94,24 @@ export class ArticleUseCases
       article.isArchived = articleDto.isArchived;
     if (undefined !== articleDto.isSaved) article.isSaved = articleDto.isSaved;
     if (articleDto.tags !== undefined) article.tag = articleDto.tags;
+
+    if (articleDto.collectionId !== undefined) {
+      if (articleDto.collectionId !== null) {
+        // Si collectionId est défini et n'est pas null, on récupère la collection
+        const collection = await this.collectionRepository.getOneById(
+          articleDto.collectionId,
+        );
+        if (!collection) {
+          const errorMessage = "La collection spécifiée n'existe pas";
+          logger.error(errorMessage);
+          throw new Error(errorMessage);
+        }
+        article.collection = collection;
+      } else {
+        // Si collectionId est null, on retire la collection de l'article
+        article.collection = null;
+      }
+    }
 
     return await this.articleRepository.update(article);
   }
@@ -107,9 +136,5 @@ export class ArticleUseCases
 
   async deleteOldRSSArticles(olderThan: Date): Promise<void> {
     await this.articleRepository.deleteOldRSSArticles(olderThan);
-  }
-
-  async getUnanalyzedArticlesByAgent(agentId: number): Promise<Article[]> {
-    return await this.articleRepository.getUnanalyzedArticlesByAgent(agentId);
   }
 }

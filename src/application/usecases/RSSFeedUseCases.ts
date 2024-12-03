@@ -1,6 +1,8 @@
+// src/application/usecases/RSSFeedUseCases.ts
+
 import { RSSFeed } from '../../domain/entities/RSSFeed';
 import logger from '../../infrastructure/logger/logger';
-import { CollectionRepository } from '../../infrastructure/repositories/CollectionRepository';
+import { RssFeedCollectionRepository } from '../../infrastructure/repositories/RssFeedCollectionRepository';
 import { RSSFeedRepository } from '../../infrastructure/repositories/RSSFeedRepository';
 import { CreateRSSFeedDTO, UpdateRSSFeedDTO } from '../dtos/RSSFeedDTO';
 import { IUseCase } from '../interfaces/IUseCase';
@@ -11,12 +13,12 @@ export class RSSFeedUseCases
   implements IUseCase<RSSFeed, CreateRSSFeedDTO, UpdateRSSFeedDTO>
 {
   private readonly repository: RSSFeedRepository;
-  private readonly collectionRepository: CollectionRepository;
+  private readonly collectionRepository: RssFeedCollectionRepository;
   private readonly parseFeedUseCase: ParseFeedUseCase;
 
   constructor(
     repository: RSSFeedRepository,
-    collectionRepository: CollectionRepository,
+    collectionRepository: RssFeedCollectionRepository,
     parseFeedUseCase: ParseFeedUseCase,
   ) {
     this.repository = repository;

@@ -1,18 +1,18 @@
-// src/controllers/CollectionController.ts
+// src/presentation/controllers/RSSFeedCollectionController.ts
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { Request, Response, NextFunction } from 'express';
 
 import {
-  CreateCollectionDTO,
-  UpdateCollectionDTO,
-} from '../../application/dtos/CollectionDTO';
-import { CollectionUseCases } from '../../application/usecases/CollectionUseCases';
+  CreateRssFeedCollectionDTO,
+  UpdateRssFeedCollectionDTO,
+} from '../../application/dtos/RSSFeedCollectionDTO';
+import { RSSFeedCollectionUseCases } from '../../application/usecases/RSSFeedCollectionUseCases';
 
-export class CollectionController {
-  private readonly useCases: CollectionUseCases;
+export class RSSFeedCollectionController {
+  private readonly useCases: RSSFeedCollectionUseCases;
 
-  constructor(useCases: CollectionUseCases) {
+  constructor(useCases: RSSFeedCollectionUseCases) {
     this.useCases = useCases;
   }
 
@@ -52,7 +52,7 @@ export class CollectionController {
     next: NextFunction,
   ) => {
     try {
-      const dto = plainToInstance(CreateCollectionDTO, req.body);
+      const dto = plainToInstance(CreateRssFeedCollectionDTO, req.body);
       const errors = await validate(dto);
       if (errors.length > 0) {
         return res.status(400).json({ errors });
@@ -72,7 +72,10 @@ export class CollectionController {
   ) => {
     try {
       const id = Number(req.params.id);
-      const dto = plainToInstance(UpdateCollectionDTO, { id, ...req.body });
+      const dto = plainToInstance(UpdateRssFeedCollectionDTO, {
+        id,
+        ...req.body,
+      });
       const errors = await validate(dto);
       if (errors.length > 0) {
         return res.status(400).json({ errors });

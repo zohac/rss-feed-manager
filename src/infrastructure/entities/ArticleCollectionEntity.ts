@@ -1,10 +1,10 @@
 // src/infrastructure/entities/CollectionEntity.ts
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
-import { RSSFeedEntity } from './RSSFeedEntity';
+import { ArticleEntity } from './ArticleEntity';
 
 @Entity()
-export class CollectionEntity {
+export class ArticleCollectionEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -15,9 +15,9 @@ export class CollectionEntity {
   description?: string;
 
   @OneToMany(
-    () => RSSFeedEntity,
-    (rSSFeedEntity) => rSSFeedEntity.collection,
+    () => ArticleEntity,
+    (ArticleEntity) => ArticleEntity.collection,
     {},
   )
-  feeds?: RSSFeedEntity[];
+  articles?: ArticleEntity[];
 }

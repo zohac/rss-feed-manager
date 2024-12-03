@@ -158,7 +158,7 @@ rss-feed-manager/
 │   │   │   ├── AIAgentDTO.ts
 │   │   │   ├── AIConfigurationDTO.ts
 │   │   │   ├── ArticleDTO.ts
-│   │   │   ├── CollectionDTO.ts
+│   │   │   ├── RSSFeedCollectionDTO.ts
 │   │   │   └── RSSFeedDTO.ts
 │   │   ├── interfaces/
 │   │   │   ├── IAISErvice.ts
@@ -170,17 +170,19 @@ rss-feed-manager/
 │   │       ├── AIAgentUseCases.ts
 │   │       ├── AIAnalysisUseCases.ts
 │   │       ├── ArticleUseCases.ts
-│   │       ├── CollectionUseCases.ts
+│   │       ├── RSSFeedCollectionUseCases.ts
 │   │       ├── ParseFeedUseCases.ts
 │   │       └── RSSFeedUseCases.ts
 │   ├── domain/
 │   │   └── entities/
-│   │       ├── AIAgent.ts
-│   │       ├── AIAnalysis.ts
-│   │       ├── AIConfiguration.ts
-│   │       ├── Article.ts
-│   │       ├── Collection.ts
-│   │       └── RSSFeed.ts
+│   │   │   ├── AIAgent.ts
+│   │   │   ├── AIAnalysis.ts
+│   │   │   ├── AIConfiguration.ts
+│   │   │   ├── Article.ts
+│   │   │   ├── RSSFeedCollection.ts
+│   │   │   └── RSSFeed.ts
+│   │   └── interfaces/
+│   │       └──  IBaseCollection.ts
 │   ├── infrastructure/
 │   │   ├── Config/
 │   │   │   ├── config.ts
@@ -191,7 +193,7 @@ rss-feed-manager/
 │   │   │   ├── AIAnalysisEntity.ts
 │   │   │   ├── AIConfigurationEntity.ts
 │   │   │   ├── ArticleEntity.ts
-│   │   │   ├── CollectionEntity.ts
+│   │   │   ├── RSSFeedCollectionEntity.ts
 │   │   │   └── RSSFeedEntity.ts
 │   │   ├── integrations/
 │   │   │   └── AIServiceFactory.ts
@@ -204,13 +206,13 @@ rss-feed-manager/
 │   │   │   ├── AIAnalysisMapper.ts
 │   │   │   ├── AIConfigurationMapper.ts
 │   │   │   ├── ArticleMapper.ts
-│   │   │   ├── CollectionMapper.ts
+│   │   │   ├── RSSFeedCollectionMapper.ts
 │   │   │   └── RSSFeedMapper.ts
 │   │   └── repositories/
 │   │   │   ├── AIAgentRepository.ts
 │   │   │   ├── AIAnalysisRepository.ts
 │   │   │   ├── ArticleRepository.ts
-│   │   │   ├── CollectionRepository.ts
+│   │   │   ├── RSSFeedCollectionRepository.ts
 │   │   │   └── RSSFeedRepository.ts
 │   │   └── services/
 │   │       └── CronService.ts
@@ -219,7 +221,7 @@ rss-feed-manager/
 │   │   │   ├── AIAgentController.ts
 │   │   │   ├── AIAnalysisController.ts
 │   │   │   ├── ArticleController.ts
-│   │   │   ├── CollectionController.ts
+│   │   │   ├── RSSFeedCollectionController.ts
 │   │   │   └── RSSFeedController.ts
 │   │   ├── middlewares/
 │   │   │   ├── errorHandler.ts
@@ -228,7 +230,7 @@ rss-feed-manager/
 │   │       ├── agent.ts
 │   │       ├── analysis.ts
 │   │       ├── articles.ts
-│   │       ├── collections.ts
+│   │       ├── rssFeedCollections.ts
 │   │       ├── feeds.ts
 │   │       └── index.ts
 │   ├── utils/

@@ -25,7 +25,7 @@ export class ArticleRepository implements IRepository<Article> {
 
   async getAll(): Promise<Article[]> {
     const entities = await this.articleRepository.find({
-      relations: ['feed', 'analysis'],
+      relations: ['feed', 'analysis', 'collection'],
     });
     return this.mapArticles(entities);
   }
@@ -33,7 +33,7 @@ export class ArticleRepository implements IRepository<Article> {
   async getOneById(id: number): Promise<Article | null> {
     const entity = await this.articleRepository.findOne({
       where: { id },
-      relations: ['feed', 'analysis'],
+      relations: ['feed', 'analysis', 'collection'],
     });
     if (!entity) return null;
 
@@ -78,8 +78,14 @@ export class ArticleRepository implements IRepository<Article> {
 
     const articleEntity = ArticleMapper.toEntity(article);
     await this.articleRepository.update(articleEntity.id, articleEntity);
+    const entity = await this.getOneById(articleEntity.id);
+    if (!entity) {
+      const errorMessage = "Erreur lor de la mise à jour de l'article";
+      logger.error(errorMessage);
+      throw new Error(errorMessage);
+    }
 
-    return article;
+    return entity;
   }
 
   async delete(id: number): Promise<void> {

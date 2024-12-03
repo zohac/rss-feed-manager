@@ -2,6 +2,7 @@
 import { IEntity } from '../../application/interfaces/IEntity';
 
 import { AIAnalysis } from './AIAnalysis';
+import { ArticleCollection } from './ArticleCollection';
 import { RSSFeed } from './RSSFeed';
 
 export enum ArticleSourceType {
@@ -25,5 +26,6 @@ export class Article implements IEntity {
     public description?: string,
     public content?: string,
     public tag?: string[],
+    public collection?: ArticleCollection | null,
   ) {}
 }

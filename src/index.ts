@@ -6,9 +6,10 @@ import swaggerUi from 'swagger-ui-express';
 
 import { AIAgentUseCases } from './application/usecases/AIAgentUseCases';
 import { AIAnalysisUseCase } from './application/usecases/AIAnalysisUseCase';
+import { ArticleCollectionUseCases } from './application/usecases/ArticleCollectionUseCases';
 import { ArticleUseCases } from './application/usecases/ArticleUseCases';
-import { CollectionUseCases } from './application/usecases/CollectionUseCases';
 import { ParseFeedUseCase } from './application/usecases/ParseFeedUseCase';
+import { RSSFeedCollectionUseCases } from './application/usecases/RSSFeedCollectionUseCases';
 import { RSSFeedUseCases } from './application/usecases/RSSFeedUseCases';
 import { config } from './infrastructure/config/config';
 import { AppDataSource } from './infrastructure/database/dataSource';
@@ -16,14 +17,16 @@ import { AIServiceFactory } from './infrastructure/factories/AIServiceFactory';
 import logger from './infrastructure/logger/logger';
 import { AIAgentRepository } from './infrastructure/repositories/AIAgentRepository';
 import { AIAnalysisRepository } from './infrastructure/repositories/AIAnalysisRepository';
+import { ArticleCollectionRepository } from './infrastructure/repositories/ArticleCollectionRepository';
 import { ArticleRepository } from './infrastructure/repositories/ArticleRepository';
-import { CollectionRepository } from './infrastructure/repositories/CollectionRepository';
+import { RssFeedCollectionRepository } from './infrastructure/repositories/RssFeedCollectionRepository';
 import { RSSFeedRepository } from './infrastructure/repositories/RSSFeedRepository';
 import { CronService } from './infrastructure/services/CronService';
 import { AIAgentController } from './presentation/controllers/AIAgentController';
 import { AIAnalysisController } from './presentation/controllers/AIAnalysisController';
+import { ArticleCollectionController } from './presentation/controllers/ArticleCollectionController';
 import { ArticleController } from './presentation/controllers/ArticleController';
-import { CollectionController } from './presentation/controllers/CollectionController';
+import { RSSFeedCollectionController } from './presentation/controllers/RSSFeedCollectionController';
 import { RSSFeedController } from './presentation/controllers/RSSFeedController';
 import { errorHandler } from './presentation/middlewares/errorHandler';
 import { routeNotFound } from './presentation/middlewares/routeNotFound';
@@ -54,7 +57,8 @@ const startServer = async () => {
 
     // Instancier les dépôts après l'initialisation de DataSource
     const feedRepository = new RSSFeedRepository();
-    const collectionRepository = new CollectionRepository();
+    const collectionRepository = new RssFeedCollectionRepository();
+    const articleCollectionRepository = new ArticleCollectionRepository();
     const articleRepository = new ArticleRepository();
     const agentRepository = new AIAgentRepository();
     const analysisRepository = new AIAnalysisRepository();
@@ -69,10 +73,15 @@ const startServer = async () => {
       collectionRepository,
       parseFeedUseCase,
     );
-    const collectionUseCases = new CollectionUseCases(collectionRepository);
+    const rssFeedCollectionUseCases = new RSSFeedCollectionUseCases(
+      collectionRepository,
+    );
+    const articleCollectionUseCases = new ArticleCollectionUseCases(
+      articleCollectionRepository,
+    );
     const articleUseCases = new ArticleUseCases(
       articleRepository,
-      feedRepository,
+      articleCollectionRepository,
     );
     const agentUseCases = new AIAgentUseCases(
       agentRepository,
@@ -87,7 +96,12 @@ const startServer = async () => {
 
     // Instancier les contrôleurs
     const feedController = new RSSFeedController(feedUseCases);
-    const collectionController = new CollectionController(collectionUseCases);
+    const rssFeedCollectionController = new RSSFeedCollectionController(
+      rssFeedCollectionUseCases,
+    );
+    const articleCollectionController = new ArticleCollectionController(
+      articleCollectionUseCases,
+    );
     const articleController = new ArticleController(articleUseCases);
     const agentController = new AIAgentController(agentUseCases);
     const analysisController = new AIAnalysisController(analysisUseCases);
@@ -95,7 +109,8 @@ const startServer = async () => {
     // Créer et utiliser les routes
     const router = createRouter(
       feedController,
-      collectionController,
+      rssFeedCollectionController,
+      articleCollectionController,
       articleController,
       agentController,
       analysisController,

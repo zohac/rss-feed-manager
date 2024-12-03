@@ -1,9 +1,9 @@
-// src/domain/entities/Collection.ts
-import { IEntity } from '../../application/interfaces/IEntity';
+// src/domain/entities/RssFeedCollection.ts;
+import { IBaseCollection } from '../interfaces/IBaseCollection';
 
 import { RSSFeed } from './RSSFeed';
 
-export class Collection implements IEntity {
+export class RSSFeedCollection implements IBaseCollection {
   constructor(
     public id: number | undefined,
     public name: string,

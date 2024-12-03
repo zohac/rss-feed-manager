@@ -1,7 +1,7 @@
 // src/infrastructure/entities/RSSFeedEntity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 
-import { CollectionEntity } from './CollectionEntity';
+import { RSSFeedCollectionEntity } from './RSSFeedCollectionEntity';
 
 @Entity()
 export class RSSFeedEntity {
@@ -18,12 +18,12 @@ export class RSSFeedEntity {
   description?: string;
 
   @ManyToOne(
-    () => CollectionEntity,
+    () => RSSFeedCollectionEntity,
     (collectionEntity) => collectionEntity.feeds,
     {
       nullable: true,
       onDelete: 'SET NULL',
     },
   )
-  collection?: CollectionEntity;
+  collection?: RSSFeedCollectionEntity;
 }

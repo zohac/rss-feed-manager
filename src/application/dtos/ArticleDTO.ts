@@ -2,10 +2,12 @@
 import {
   IsBoolean,
   IsDate,
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
+  Min,
   ValidateIf,
 } from 'class-validator';
 
@@ -50,6 +52,11 @@ export class CreateArticleDTO {
   @IsOptional()
   @IsString()
   content?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  collectionId?: number;
 }
 
 export class UpdateArticleDTO {
@@ -96,4 +103,10 @@ export class UpdateArticleDTO {
   @IsOptional()
   @IsString({ each: true })
   tags?: string[];
+
+  @IsOptional()
+  @ValidateIf((o) => o.collectionId !== null)
+  @IsInt()
+  @Min(1)
+  collectionId?: number | null;
 }

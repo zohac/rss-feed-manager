@@ -1,7 +1,7 @@
 // src/application/dtos/CollectionDTO.ts
 import { IsString, IsOptional, IsNotEmpty, IsNumber } from 'class-validator';
 
-export class CreateCollectionDTO {
+export class CreateRssFeedCollectionDTO {
   @IsString()
   name!: string;
 
@@ -10,7 +10,7 @@ export class CreateCollectionDTO {
   description?: string;
 }
 
-export class UpdateCollectionDTO {
+export class UpdateRssFeedCollectionDTO {
   @IsNotEmpty()
   @IsNumber()
   id!: number;

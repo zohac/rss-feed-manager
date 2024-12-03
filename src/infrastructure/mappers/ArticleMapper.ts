@@ -2,9 +2,11 @@
 
 import { AIAnalysis } from '../../domain/entities/AIAnalysis';
 import { Article } from '../../domain/entities/Article';
+import { ArticleCollectionEntity } from '../entities/ArticleCollectionEntity';
 import { ArticleEntity } from '../entities/ArticleEntity';
 
 import { AIAnalysisMapper } from './AIAnalysisMapper';
+import { ArticleCollectionMapper } from './ArticleCollectionMapper';
 import { RSSFeedMapper } from './RSSFeedMapper';
 
 export class ArticleMapper {
@@ -27,6 +29,12 @@ export class ArticleMapper {
 
     if (null !== entity.feed && undefined !== entity.feed) {
       domain.feed = RSSFeedMapper.toPartialDomain(entity.feed);
+    }
+
+    if (null !== entity.collection && undefined !== entity.collection) {
+      domain.collection = ArticleCollectionMapper.toPartialDomain(
+        entity.collection,
+      );
     }
 
     const analysis: AIAnalysis[] = [];
@@ -57,6 +65,12 @@ export class ArticleMapper {
       domain.feed = RSSFeedMapper.toPartialDomain(entity.feed);
     }
 
+    if (null !== entity.collection && undefined !== entity.collection) {
+      domain.collection = ArticleCollectionMapper.toPartialDomain(
+        entity.collection,
+      );
+    }
+
     return domain;
   }
 
@@ -75,6 +89,13 @@ export class ArticleMapper {
     entity.sourceType = domain.sourceType;
 
     if (domain.feed) entity.feed = RSSFeedMapper.toPartialEntity(domain.feed);
+
+    let collection: ArticleCollectionEntity | null = null;
+    if (undefined !== domain.collection && null !== domain.collection) {
+      collection = ArticleCollectionMapper.toPartialEntity(domain.collection);
+    }
+
+    entity.collection = collection;
 
     if (undefined !== domain.description)
       entity.description = domain.description;
@@ -97,6 +118,11 @@ export class ArticleMapper {
     entity.sourceType = domain.sourceType;
 
     if (domain.feed) entity.feed = RSSFeedMapper.toPartialEntity(domain.feed);
+
+    if (domain.collection)
+      entity.collection = ArticleCollectionMapper.toPartialEntity(
+        domain.collection,
+      );
 
     if (undefined !== domain.description)
       entity.description = domain.description;

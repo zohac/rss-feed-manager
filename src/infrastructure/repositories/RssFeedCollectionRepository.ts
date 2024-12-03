@@ -1,46 +1,50 @@
-// src/infrastructure/collectionRepositorysitories/CollectionRepository.ts
+// src/infrastructure/Repositories/RSSFeedCollectionRepository.ts
 import { Repository } from 'typeorm';
 
 import { IRepository } from '../../application/interfaces/IRepository';
-import { Collection } from '../../domain/entities/Collection';
+import { RSSFeedCollection } from '../../domain/entities/RSSFeedCollection';
 import { AppDataSource } from '../database/dataSource';
-import { CollectionEntity } from '../entities/CollectionEntity';
+import { RSSFeedCollectionEntity } from '../entities/RSSFeedCollectionEntity';
 import logger from '../logger/logger';
-import { CollectionMapper } from '../mappers/CollectionMapper';
+import { RSSFeedCollectionMapper } from '../mappers/RSSFeedCollectionMapper';
 
-export class CollectionRepository implements IRepository<Collection> {
-  private readonly collectionRepository: Repository<CollectionEntity>;
+export class RssFeedCollectionRepository
+  implements IRepository<RSSFeedCollection>
+{
+  private readonly collectionRepository: Repository<RSSFeedCollectionEntity>;
 
   constructor() {
-    this.collectionRepository = AppDataSource.getRepository(CollectionEntity);
+    this.collectionRepository = AppDataSource.getRepository(
+      RSSFeedCollectionEntity,
+    );
   }
 
-  async getAll(): Promise<Collection[]> {
+  async getAll(): Promise<RSSFeedCollection[]> {
     const entities = await this.collectionRepository.find({
       relations: ['feeds'],
     });
-    return entities.map((entity) => CollectionMapper.toDomain(entity));
+    return entities.map((entity) => RSSFeedCollectionMapper.toDomain(entity));
   }
 
-  async getOneById(id: number): Promise<Collection | null> {
+  async getOneById(id: number): Promise<RSSFeedCollection | null> {
     const entity = await this.collectionRepository.findOne({
       where: { id },
       relations: ['feeds'],
     });
     if (!entity) return null;
 
-    return CollectionMapper.toDomain(entity);
+    return RSSFeedCollectionMapper.toDomain(entity);
   }
 
-  async create(collection: Collection): Promise<Collection> {
-    const collectionEntity = CollectionMapper.toEntity(collection);
+  async create(collection: RSSFeedCollection): Promise<RSSFeedCollection> {
+    const collectionEntity = RSSFeedCollectionMapper.toEntity(collection);
     const entity = this.collectionRepository.create(collectionEntity);
     const result = await this.collectionRepository.save(entity);
 
-    return CollectionMapper.toDomain(result);
+    return RSSFeedCollectionMapper.toDomain(result);
   }
 
-  async update(collection: Collection): Promise<Collection> {
+  async update(collection: RSSFeedCollection): Promise<RSSFeedCollection> {
     if (!collection.id) {
       const errorMessage =
         'Une erreur est survenu lors de la mise à jour à jour de la collection';
@@ -48,11 +52,8 @@ export class CollectionRepository implements IRepository<Collection> {
       throw new Error(errorMessage);
     }
 
-    const collectionEntity = CollectionMapper.toEntity(collection);
-    await this.collectionRepository.update(
-      collectionEntity.id,
-      collectionEntity,
-    );
+    const collectionEntity = RSSFeedCollectionMapper.toEntity(collection);
+    await this.collectionRepository.save(collectionEntity);
 
     const entity = await this.getOneById(collectionEntity.id);
     if (!entity) {
