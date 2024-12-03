@@ -24,12 +24,13 @@
 
 ## Features
 
-- **CRUD Operations for RSS Feeds:** Create, Read, Update, and Delete RSS feeds.
-- **CRUD Operations for Collections:** Organize RSS feeds into collections for better management.
-- **Data Validation:** Ensures data integrity using `class-validator`.
-- **API Documentation:** Interactive API docs available through Swagger UI.
-- **Error Handling:** Centralized error handling for robust and predictable API behavior.
-- **Clean Architecture:** Separation of concerns for better maintainability and scalability.
+- **CRUD Operations**: Manage RSS Feeds, Collections, Articles, and AI Agents.
+- **AI Integration** : Analyze articles using AI agents (e.g., Ollama, ChatGPT).
+- **Flexible Analysis Configuration**: Customizable AI prompts and roles for agents.
+- **Data Validation**: Ensures data integrity using class-validator.
+- **Error Handling**: Centralized error handling for robust and predictable API behavior.
+- **API Documentation**: Interactive API documentation via Swagger UI.
+- **Clean Architecture** : Ensures separation of concerns for better maintainability and scalability.
 
 ## Technologies Used
 
@@ -48,9 +49,10 @@
 
 Ensure you have the following installed on your machine:
 
-- **Node.js:** Version 14.x or higher
-- **npm:** Comes with Node.js
+- **Node.js:** Version 20.x or higher
+- **pnpm:** For dependency management, comes with Node.js
 - **Git:** For version control (optional)
+- **Ollama:** For using AI locally (optional)
 
 ### Installation
 
@@ -76,8 +78,9 @@ Ensure you have the following installed on your machine:
     Create a .env file in the root directory of the project to configure environment-specific settings.
 
     ```env
-    PORT=3000
-    DATABASE_PATH=./rssfeeds.sqlite
+   PORT=3000
+   DATABASE_PATH=./rssfeeds.sqlite
+   OLLAMA_BASE_URL=http://localhost:11434
     ```
     
    * PORT: The port on which the server will run. Default is 3000.
@@ -248,18 +251,22 @@ rss-feed-manager/
 
 ### Description of Key Directories and Files
 
-* controllers/: Contains controller classes handling HTTP requests and responses.
-* dtos/: Data Transfer Objects defining the structure and validation of request bodies.
-* entities/: Domain entities representing the core business objects.
-* infrastructure/: Contains the database setup, TypeORM entities, and repositories for data access.
-* database/: TypeORM DataSource configuration.
-* entities/: TypeORM entity definitions.
-* repositories/: Repository classes interfacing with TypeORM for CRUD operations.
-* middlewares/: Express middleware functions, such as error handling.
-* routes/: Express route definitions, organizing endpoints for feeds and collections.
-* swagger.json: Swagger/OpenAPI specification for API documentation.
-* usecases/: Application logic and business rules encapsulated in use case classes.
-* index.ts: Entry point of the application, initializing the server and dependencies.
+* `application/`: Contains use cases, DTOs, and interfaces defining the business logic and contracts.
+* `domain/`: Core entities representing the business models.
+  * `entities/`: Domain entities representing the core business objects.
+* `infrastructure/`:
+  * `database/`: TypeORM DataSource configuration.
+  * `entities/`: TypeORM entity definitions for database interaction.
+  * `integrations/`: External service integrations (e.g., OllamaService).
+  * `mappers/`: Transformations between domain and database entities.
+  * `repositories/`: Data access layer interfacing with TypeORM.
+* `services/`: Application-specific services (e.g., CronService).
+  * `presentation/`:
+  * `controllers/`: Express controllers handling HTTP requests and responses.
+  * `middlewares/`: Express middleware for error handling and request validation.
+  * `routes/`: Route definitions organized by feature.
+* `utils/`: General utility functions (e.g., string manipulation).
+* `index.ts`: Application entry point, initializing the server and dependencies.
 
 ## License
 
