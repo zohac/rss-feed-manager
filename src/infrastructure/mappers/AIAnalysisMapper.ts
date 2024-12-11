@@ -11,6 +11,7 @@ export class AIAnalysisMapper {
     const domain = new AIAnalysis(
       entity.id,
       entity.isRelevant,
+      entity.isActionExecuted,
       entity.analysisDate,
       undefined,
       undefined,
@@ -30,6 +31,7 @@ export class AIAnalysisMapper {
 
     if (undefined !== domain.id) entity.id = domain.id;
     entity.isRelevant = domain.isRelevant;
+    entity.isActionExecuted = domain.isActionExecuted;
     entity.analysisDate = domain.analysisDate;
 
     if (undefined !== domain.agent)

@@ -2,8 +2,8 @@
 
 import { Repository } from 'typeorm';
 
-import { IRepository } from '../../application/interfaces/IRepository';
 import { AIAgent } from '../../domain/entities/AIAgent';
+import { IRepository } from '../../domain/interfaces/IRepository';
 import { AppDataSource } from '../database/dataSource';
 import { AIAgentEntity } from '../entities/AIAgentEntity';
 import logger from '../logger/logger';

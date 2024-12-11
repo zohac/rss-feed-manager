@@ -49,6 +49,8 @@ export class ArticleEntity {
   isSaved!: boolean;
 
   @ManyToOne(() => RSSFeedEntity, {
+    cascade: true,
+    eager: true,
     onDelete: 'CASCADE',
   })
   feed!: RSSFeedEntity;
@@ -69,6 +71,8 @@ export class ArticleEntity {
     () => ArticleCollectionEntity,
     (collectionEntity) => collectionEntity.articles,
     {
+      cascade: true,
+      eager: true,
       nullable: true,
       onDelete: 'SET NULL',
     },

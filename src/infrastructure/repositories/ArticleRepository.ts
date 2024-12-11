@@ -1,14 +1,15 @@
 // src/infrastructure/articleRepositorysitories/ArticleRepository.ts
 import { LessThan, Repository } from 'typeorm';
 
-import { IRepository } from '../../application/interfaces/IRepository';
+import { NotFoundException } from '../../application/exception/NotFoundException';
 import { Article, ArticleSourceType } from '../../domain/entities/Article';
+import { IArticleRepository } from '../../domain/interfaces/IArticleRepository';
 import { AppDataSource } from '../database/dataSource';
 import { ArticleEntity } from '../entities/ArticleEntity';
 import logger from '../logger/logger';
 import { ArticleMapper } from '../mappers/ArticleMapper';
 
-export class ArticleRepository implements IRepository<Article> {
+export class ArticleRepository implements IArticleRepository {
   private readonly articleRepository: Repository<ArticleEntity>;
 
   constructor() {
@@ -27,14 +28,22 @@ export class ArticleRepository implements IRepository<Article> {
     const entities = await this.articleRepository.find({
       relations: ['feed', 'analysis', 'collection'],
     });
-    return this.mapArticles(entities);
+
+    return entities.map((entity) => ArticleMapper.toDomain(entity));
   }
 
   async getOneById(id: number): Promise<Article | null> {
-    const entity = await this.articleRepository.findOne({
-      where: { id },
-      relations: ['feed', 'analysis', 'collection'],
-    });
+    const entity = await this.articleRepository
+      .createQueryBuilder('article')
+      .leftJoinAndSelect('article.feed', 'feed')
+      .leftJoinAndSelect('article.analysis', 'analysis')
+      .leftJoinAndSelect('article.collection', 'collection')
+      .leftJoinAndSelect('analysis.agent', 'agent')
+      .leftJoinAndSelect('agent.configuration', 'configuration')
+      .leftJoinAndSelect('agent.actions', 'actions')
+      .where('article.id = :id', { id })
+      .getOne();
+
     if (!entity) return null;
 
     return ArticleMapper.toDomain(entity);
@@ -45,7 +54,8 @@ export class ArticleRepository implements IRepository<Article> {
       where: { feed: { id: feedId } },
       relations: ['feed'],
     });
-    return this.mapArticles(entities);
+
+    return entities.map((entity) => ArticleMapper.toDomain(entity));
   }
 
   async getOneByLink(link: string): Promise<Article | null> {
@@ -66,23 +76,20 @@ export class ArticleRepository implements IRepository<Article> {
       .where('agent.id IS NULL OR agent.id != :agentId', { agentId })
       .getMany();
 
-    return this.mapArticles(entities);
+    return entities.map((entity) => ArticleMapper.toDomain(entity));
   }
 
   async update(article: Article): Promise<Article> {
     if (undefined === article.id) {
-      const errorMessage = "Erreur lor de la mise à jour de l'article";
-      logger.error(errorMessage);
-      throw new Error(errorMessage);
+      throw new NotFoundException("Erreur lor de la mise à jour de l'article");
     }
 
     const articleEntity = ArticleMapper.toEntity(article);
     await this.articleRepository.update(articleEntity.id, articleEntity);
     const entity = await this.getOneById(articleEntity.id);
+
     if (!entity) {
-      const errorMessage = "Erreur lor de la mise à jour de l'article";
-      logger.error(errorMessage);
-      throw new Error(errorMessage);
+      throw new NotFoundException("Erreur lor de la mise à jour de l'article");
     }
 
     return entity;
@@ -98,9 +105,5 @@ export class ArticleRepository implements IRepository<Article> {
       sourceType: ArticleSourceType.RSS,
       isSaved: false,
     });
-  }
-
-  private mapArticles(entities: ArticleEntity[]): Article[] {
-    return entities.map((entity) => ArticleMapper.toDomain(entity));
   }
 }

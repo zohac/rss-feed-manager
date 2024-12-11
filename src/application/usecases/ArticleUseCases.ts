@@ -1,25 +1,21 @@
 // src/usecases/ArticleUseCases.ts
 
 import { Article, ArticleSourceType } from '../../domain/entities/Article';
+import { ArticleCollection } from '../../domain/entities/ArticleCollection';
+import { IArticleRepository } from '../../domain/interfaces/IArticleRepository';
+import { IRepository } from '../../domain/interfaces/IRepository';
+import { IUseCase } from '../../domain/interfaces/IUseCase';
 import logger from '../../infrastructure/logger/logger';
-import { ArticleCollectionRepository } from '../../infrastructure/repositories/ArticleCollectionRepository';
-import { ArticleRepository } from '../../infrastructure/repositories/ArticleRepository';
 import { CreateArticleDTO, UpdateArticleDTO } from '../dtos/ArticleDTO';
-import { IUseCase } from '../interfaces/IUseCase';
+import { NotFoundException } from '../exception/NotFoundException';
 
 export class ArticleUseCases
   implements IUseCase<Article, CreateArticleDTO, UpdateArticleDTO>
 {
-  private readonly articleRepository: ArticleRepository;
-  private readonly collectionRepository: ArticleCollectionRepository;
-
   constructor(
-    articleRepository: ArticleRepository,
-    collectionRepository: ArticleCollectionRepository,
-  ) {
-    this.articleRepository = articleRepository;
-    this.collectionRepository = collectionRepository;
-  }
+    private readonly articleRepository: IArticleRepository,
+    private readonly collectionRepository: IRepository<ArticleCollection>,
+  ) {}
 
   async create(articleDTO: CreateArticleDTO): Promise<Article> {
     let existingArticle: Article | null = null;
@@ -77,10 +73,9 @@ export class ArticleUseCases
     const article = await this.articleRepository.getOneById(articleDto.id);
 
     if (!article) {
-      const errorMessage =
-        "Une erreur est survenu lors de la mise à jour à jour de l'article";
-      logger.error(errorMessage);
-      throw new Error(errorMessage);
+      throw new NotFoundException(
+        "Une erreur est survenu lors de la mise à jour à jour de l'article",
+      );
     }
 
     // Contrôler les modifications en fonction du sourceType
@@ -136,5 +131,24 @@ export class ArticleUseCases
 
   async deleteOldRSSArticles(olderThan: Date): Promise<void> {
     await this.articleRepository.deleteOldRSSArticles(olderThan);
+  }
+
+  async assignToCollection(
+    article: Article,
+    articleCollection: ArticleCollection,
+  ): Promise<void> {
+    if (undefined !== articleCollection.id) {
+      const collection = await this.collectionRepository.getOneById(
+        articleCollection.id,
+      );
+      if (!collection) {
+        throw new NotFoundException(
+          `Collection avec l'ID ${articleCollection.id} non trouvée`,
+        );
+      }
+      article.collection = collection;
+
+      await this.articleRepository.update(article);
+    }
   }
 }

@@ -1,6 +1,7 @@
 // src/routes/index.ts
 import { Router } from 'express';
 
+import { ActionController } from '../controllers/ActionController';
 import { AIAgentController } from '../controllers/AIAgentController';
 import { AIAnalysisController } from '../controllers/AIAnalysisController';
 import { ArticleCollectionController } from '../controllers/ArticleCollectionController';
@@ -8,6 +9,7 @@ import { ArticleController } from '../controllers/ArticleController';
 import { RSSFeedCollectionController } from '../controllers/RSSFeedCollectionController';
 import { RSSFeedController } from '../controllers/RSSFeedController';
 
+import { actionRouter } from './actions';
 import { agentRouter } from './agent';
 import { analysisRouter } from './analysis';
 import { articleCollectionsRouter } from './articleCollections';
@@ -22,6 +24,7 @@ export const createRouter = (
   articlesController: ArticleController,
   agentController: AIAgentController,
   analysisController: AIAnalysisController,
+  actionController: ActionController,
 ): Router => {
   const router = Router();
 
@@ -38,6 +41,7 @@ export const createRouter = (
   router.use('/articles', articlesRouter(articlesController));
   router.use('/agents', agentRouter(agentController));
   router.use('/analysis', analysisRouter(analysisController));
+  router.use('/actions', actionRouter(actionController));
 
   return router;
 };

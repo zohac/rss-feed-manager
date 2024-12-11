@@ -1,4 +1,4 @@
-// /src/application/interfaces/IUseCase.ts
+// /src/domain/interfaces/IUseCase.ts
 
 export interface IUseCase<T, U, V> {
   getOneById(id: number): Promise<T | null>;

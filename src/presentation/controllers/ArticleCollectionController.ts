@@ -36,6 +36,7 @@ export class ArticleCollectionController {
   ) => {
     try {
       const collection = await this.useCases.getOneById(Number(req.params.id));
+
       if (collection) {
         res.json(collection);
       } else {

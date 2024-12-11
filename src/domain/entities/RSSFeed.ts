@@ -1,5 +1,5 @@
 // src/domain/entities/RSSFeed.ts
-import { IEntity } from '../../application/interfaces/IEntity';
+import { IEntity } from '../interfaces/IEntity';
 
 import { RSSFeedCollection } from './RSSFeedCollection';
 

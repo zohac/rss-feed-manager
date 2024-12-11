@@ -6,8 +6,10 @@ import {
   Column,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
+import { ActionEntity } from './ActionEntity';
 import { AIConfigurationEntity } from './AIConfigurationEntity';
 
 @Entity()
@@ -35,4 +37,10 @@ export class AIAgentEntity {
   })
   @JoinColumn()
   configuration!: AIConfigurationEntity;
+
+  @OneToMany(() => ActionEntity, (actionEntity) => actionEntity.agent, {
+    cascade: true,
+    eager: true,
+  })
+  actions?: ActionEntity[];
 }

@@ -1,12 +1,14 @@
 // src/application/usecases/ArticleCollectionUseCases.ts
 import { ArticleCollection } from '../../domain/entities/ArticleCollection';
+import { IRepository } from '../../domain/interfaces/IRepository';
+import { IUseCase } from '../../domain/interfaces/IUseCase';
 import logger from '../../infrastructure/logger/logger';
 import { ArticleCollectionRepository } from '../../infrastructure/repositories/ArticleCollectionRepository';
 import {
   CreateArticleCollectionDTO,
   UpdateArticleCollectionDTO,
 } from '../dtos/ArticleCollectionDTO';
-import { IUseCase } from '../interfaces/IUseCase';
+import { NotFoundException } from '../exception/NotFoundException';
 
 export class ArticleCollectionUseCases
   implements
@@ -16,7 +18,7 @@ export class ArticleCollectionUseCases
       UpdateArticleCollectionDTO
     >
 {
-  private readonly repository: ArticleCollectionRepository;
+  private readonly repository: IRepository<ArticleCollection>;
 
   constructor(repository: ArticleCollectionRepository) {
     this.repository = repository;
@@ -49,10 +51,9 @@ export class ArticleCollectionUseCases
     const collection = await this.repository.getOneById(id);
 
     if (!collection) {
-      const errorMessage =
-        'Une erreur est survenu lors de la mise à jour à jour de la collection.';
-      logger.error(errorMessage);
-      throw new Error(errorMessage);
+      throw new NotFoundException(
+        'Une erreur est survenu lors de la mise à jour à jour de la collection.',
+      );
     }
 
     if (undefined !== name) {

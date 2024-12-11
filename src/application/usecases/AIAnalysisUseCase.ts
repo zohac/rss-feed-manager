@@ -1,18 +1,19 @@
 import { AIAgent, AIAgentRole } from '../../domain/entities/AIAgent';
 import { AIAnalysis } from '../../domain/entities/AIAnalysis';
 import { Article } from '../../domain/entities/Article';
+import { IAIAnalysisRepository } from '../../domain/interfaces/IAIAnalysisRepository';
+import { IArticleRepository } from '../../domain/interfaces/IArticleRepository';
+import { IRepository } from '../../domain/interfaces/IRepository';
+import { IAIServiceFactory } from '../../domain/interfaces/IServiceFactory';
 import logger from '../../infrastructure/logger/logger';
-import { AIAgentRepository } from '../../infrastructure/repositories/AIAgentRepository';
-import { AIAnalysisRepository } from '../../infrastructure/repositories/AIAnalysisRepository';
-import { ArticleRepository } from '../../infrastructure/repositories/ArticleRepository';
-import { IAIServiceFactory } from '../interfaces/IServiceFactory';
+import { NotFoundException } from '../exception/NotFoundException';
 
 export class AIAnalysisUseCase {
   constructor(
     private readonly aiServiceFactory: IAIServiceFactory,
-    private readonly aiAnalysisRepository: AIAnalysisRepository,
-    private readonly articleRepository: ArticleRepository,
-    private readonly agentRepository: AIAgentRepository,
+    private readonly aiAnalysisRepository: IAIAnalysisRepository,
+    private readonly articleRepository: IArticleRepository,
+    private readonly agentRepository: IRepository<AIAgent>,
   ) {}
 
   async analysisOneArticleWithAgent(
@@ -37,9 +38,9 @@ export class AIAnalysisUseCase {
   async analysisAllByOneAgent(agentId: number): Promise<AIAnalysis[]> {
     const agent = await this.agentRepository.getOneById(agentId);
     if (!agent) {
-      const errorMessage = `Une erreur est survenu lors de la récupération de l'agent pour l'analyse. AgentID : ${agentId}.`;
-      logger.error(errorMessage);
-      throw new Error(errorMessage);
+      throw new NotFoundException(
+        `Une erreur est survenu lors de la récupération de l'agent pour l'analyse. AgentID : ${agentId}.`,
+      );
     }
 
     logger.info(
@@ -107,11 +108,11 @@ export class AIAnalysisUseCase {
     return await this.aiAnalysisRepository.create(analysis);
   }
 
-  // update(data: any): Promise<AIAnalysis> {
-  //   return Promise.resolve(undefined);
-  // }
-  //
-  // delete(id: number): Promise<void> {
-  //   return Promise.resolve(undefined);
-  // }
+  async update(analysis: AIAnalysis): Promise<AIAnalysis> {
+    return await this.aiAnalysisRepository.update(analysis);
+  }
+
+  async getAnalysisWithoutActionExecuted(): Promise<AIAnalysis[]> {
+    return await this.aiAnalysisRepository.getAnalysisWithoutActionExecuted();
+  }
 }

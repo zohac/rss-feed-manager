@@ -154,63 +154,83 @@ http://localhost:3000/api-docs
 rss-feed-manager/
 ├── src/
 │   ├── application/
+│   │   ├── commandes/
+│   │   │   └── AssignToCollectionCommand.ts
 │   │   ├── dtos/
+│   │   │   ├── ActionDTO.ts
 │   │   │   ├── AIAgentDTO.ts
 │   │   │   ├── AIConfigurationDTO.ts
 │   │   │   ├── ArticleDTO.ts
+│   │   │   ├── AssignToCollectionActionDTO.ts
 │   │   │   ├── RSSFeedCollectionDTO.ts
 │   │   │   └── RSSFeedDTO.ts
-│   │   ├── interfaces/
-│   │   │   ├── IAISErvice.ts
-│   │   │   ├── IEntity.ts
-│   │   │   ├── IRepository.ts
-│   │   │   ├── IServiceFactory.ts
-│   │   │   └── IUseCases.ts
+│   │   ├── exception/
+│   │   │   └── NotFoundException.ts
+│   │   ├── executors/
+│   │   │   └── ActionExecutor.ts
 │   │   └── usecases/
+│   │       ├── ActionUseCases.ts
 │   │       ├── AIAgentUseCases.ts
 │   │       ├── AIAnalysisUseCases.ts
 │   │       ├── ArticleUseCases.ts
-│   │       ├── RSSFeedCollectionUseCases.ts
 │   │       ├── ParseFeedUseCases.ts
+│   │       ├── RSSFeedCollectionUseCases.ts
 │   │       └── RSSFeedUseCases.ts
 │   ├── domain/
 │   │   └── entities/
+│   │   │   ├── Action.ts
 │   │   │   ├── AIAgent.ts
 │   │   │   ├── AIAnalysis.ts
 │   │   │   ├── AIConfiguration.ts
 │   │   │   ├── Article.ts
+│   │   │   ├── AssignToCollectionAction.ts
 │   │   │   ├── RSSFeedCollection.ts
 │   │   │   └── RSSFeed.ts
 │   │   └── interfaces/
-│   │       └──  IBaseCollection.ts
+│   │       ├── IActionCommand.ts
+│   │       ├── IAIAnalysisRepository.ts
+│   │       ├── IAIService.ts
+│   │       ├── IArticleRepository.ts
+│   │       ├── IBaseCollection.ts
+│   │       ├── IEntity.ts
+│   │       ├── IRepository.ts
+│   │       ├── IServiceFactory.ts
+│   │       └── IUseCases.ts
 │   ├── infrastructure/
 │   │   ├── Config/
 │   │   │   ├── config.ts
 │   │   ├── database/
 │   │   │   └── dataSource.ts
 │   │   ├── entities/
+│   │   │   ├── ActionEntity.ts
 │   │   │   ├── AIAgentEntity.ts
 │   │   │   ├── AIAnalysisEntity.ts
 │   │   │   ├── AIConfigurationEntity.ts
+│   │   │   ├── ArticleCollectionEntity.ts
 │   │   │   ├── ArticleEntity.ts
+│   │   │   ├── AssignToCollectionActionEntity.ts
 │   │   │   ├── RSSFeedCollectionEntity.ts
 │   │   │   └── RSSFeedEntity.ts
-│   │   ├── integrations/
+│   │   ├── factories/
 │   │   │   └── AIServiceFactory.ts
 │   │   ├── integrations/
 │   │   │   └── OllamaService.ts
 │   │   ├── logger/
 │   │   │   └── logger.ts
 │   │   ├── mappers/
+│   │   │   ├── ActionMapper.ts
 │   │   │   ├── AIAgentMapper.ts
 │   │   │   ├── AIAnalysisMapper.ts
 │   │   │   ├── AIConfigurationMapper.ts
+│   │   │   ├── ArticleCollectionMapper.ts
 │   │   │   ├── ArticleMapper.ts
 │   │   │   ├── RSSFeedCollectionMapper.ts
 │   │   │   └── RSSFeedMapper.ts
 │   │   └── repositories/
+│   │   │   ├── ActionRepository.ts
 │   │   │   ├── AIAgentRepository.ts
 │   │   │   ├── AIAnalysisRepository.ts
+│   │   │   ├── ArticleCollectionRepository.ts
 │   │   │   ├── ArticleRepository.ts
 │   │   │   ├── RSSFeedCollectionRepository.ts
 │   │   │   └── RSSFeedRepository.ts
@@ -218,17 +238,23 @@ rss-feed-manager/
 │   │       └── CronService.ts
 │   ├── presentation/
 │   │   ├── controllers/
+│   │   │   ├── ActionController.ts
 │   │   │   ├── AIAgentController.ts
 │   │   │   ├── AIAnalysisController.ts
+│   │   │   ├── ArticleCollectionController.ts
 │   │   │   ├── ArticleController.ts
 │   │   │   ├── RSSFeedCollectionController.ts
 │   │   │   └── RSSFeedController.ts
+│   │   ├── factories/
+│   │   │   └── ActionDTOFactory.ts
 │   │   ├── middlewares/
 │   │   │   ├── errorHandler.ts
 │   │   │   └── routeNotFound.ts
 │   │   └── routes/
+│   │       ├── actions.ts
 │   │       ├── agent.ts
 │   │       ├── analysis.ts
+│   │       ├── articleCollections.ts
 │   │       ├── articles.ts
 │   │       ├── rssFeedCollections.ts
 │   │       ├── feeds.ts

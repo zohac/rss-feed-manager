@@ -1,5 +1,5 @@
 // src/domain/entities/Article.ts
-import { IEntity } from '../../application/interfaces/IEntity';
+import { IEntity } from '../interfaces/IEntity';
 
 import { AIAnalysis } from './AIAnalysis';
 import { ArticleCollection } from './ArticleCollection';

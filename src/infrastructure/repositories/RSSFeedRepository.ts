@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 
-import { IRepository } from '../../application/interfaces/IRepository';
 import { RSSFeed } from '../../domain/entities/RSSFeed';
+import { IRepository } from '../../domain/interfaces/IRepository';
 import { AppDataSource } from '../database/dataSource';
 import { RSSFeedEntity } from '../entities/RSSFeedEntity';
 import logger from '../logger/logger';

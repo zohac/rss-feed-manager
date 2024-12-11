@@ -10,14 +10,23 @@ export class AIAnalysisEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => ArticleEntity)
+  @ManyToOne(() => ArticleEntity, {
+    cascade: true,
+    eager: true,
+  })
   article?: ArticleEntity;
 
-  @ManyToOne(() => AIAgentEntity)
+  @ManyToOne(() => AIAgentEntity, {
+    cascade: true,
+    eager: true,
+  })
   agent?: AIAgentEntity;
 
-  @Column()
+  @Column({ type: 'boolean', default: false })
   isRelevant!: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  isActionExecuted!: boolean;
 
   @Column()
   analysisDate!: Date;

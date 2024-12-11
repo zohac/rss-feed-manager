@@ -1,4 +1,4 @@
-// src/domain/entities/ArticleCollection.ts;
+// src/domain/entities/ArticleCollection.ts
 import { IBaseCollection } from '../interfaces/IBaseCollection';
 
 import { Article } from './Article';

@@ -1,9 +1,9 @@
 // src/infrastructure/integrations/OllamaService.ts
 
-import { IAIService } from '../../application/interfaces/IAIService';
 import { AIAgent } from '../../domain/entities/AIAgent';
 import { AIAnalysis } from '../../domain/entities/AIAnalysis';
 import { Article } from '../../domain/entities/Article';
+import { IAIService } from '../../domain/interfaces/IAIService';
 import { StringUtils } from '../../utils/stringUtils';
 import logger from '../logger/logger';
 
@@ -54,7 +54,14 @@ export class OllamaService implements IAIService {
         isRelevant = true;
       }
       // Créez et retournez une instance de AiAnalysis
-      return new AIAnalysis(undefined, isRelevant, new Date(), article, agent);
+      return new AIAnalysis(
+        undefined,
+        isRelevant,
+        false,
+        new Date(),
+        article,
+        agent,
+      );
     } catch (error) {
       logger.error(
         `Erreur lors de l'appel à Ollama pour l'agent "${agent.name}":`,

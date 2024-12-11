@@ -4,14 +4,14 @@ import Parser from 'rss-parser';
 
 import { Article, ArticleSourceType } from '../../domain/entities/Article';
 import { RSSFeed } from '../../domain/entities/RSSFeed';
+import { IArticleRepository } from '../../domain/interfaces/IArticleRepository';
 import logger from '../../infrastructure/logger/logger';
-import { ArticleRepository } from '../../infrastructure/repositories/ArticleRepository';
 
 export class ParseFeedUseCase {
-  private readonly articleRepository: ArticleRepository;
+  private readonly articleRepository: IArticleRepository;
   private readonly parser: Parser;
 
-  constructor(articleRepository: ArticleRepository) {
+  constructor(articleRepository: IArticleRepository) {
     this.articleRepository = articleRepository;
     this.parser = new Parser();
   }

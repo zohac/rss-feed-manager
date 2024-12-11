@@ -2,14 +2,14 @@
 
 import { Repository } from 'typeorm';
 
-import { IRepository } from '../../application/interfaces/IRepository';
 import { AIAnalysis } from '../../domain/entities/AIAnalysis';
+import { IAIAnalysisRepository } from '../../domain/interfaces/IAIAnalysisRepository';
 import { AppDataSource } from '../database/dataSource';
 import { AIAnalysisEntity } from '../entities/AIAnalysisEntity';
 import logger from '../logger/logger';
 import { AIAnalysisMapper } from '../mappers/AIAnalysisMapper';
 
-export class AIAnalysisRepository implements IRepository<AIAnalysis> {
+export class AIAnalysisRepository implements IAIAnalysisRepository {
   private readonly aiAnalysisRepository: Repository<AIAnalysisEntity>;
 
   constructor() {
@@ -57,5 +57,12 @@ export class AIAnalysisRepository implements IRepository<AIAnalysis> {
 
   async delete(id: number): Promise<void> {
     await this.aiAnalysisRepository.delete({ id });
+  }
+
+  async getAnalysisWithoutActionExecuted(): Promise<AIAnalysis[]> {
+    const entities = await this.aiAnalysisRepository.find({
+      where: { isActionExecuted: false, isRelevant: true },
+    });
+    return entities.map((entity) => AIAnalysisMapper.toDomain(entity));
   }
 }

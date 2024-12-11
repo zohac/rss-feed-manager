@@ -1,30 +1,23 @@
 // src/application/usecases/RSSFeedUseCases.ts
 
 import { RSSFeed } from '../../domain/entities/RSSFeed';
+import { RSSFeedCollection } from '../../domain/entities/RSSFeedCollection';
+import { IRepository } from '../../domain/interfaces/IRepository';
+import { IUseCase } from '../../domain/interfaces/IUseCase';
 import logger from '../../infrastructure/logger/logger';
-import { RssFeedCollectionRepository } from '../../infrastructure/repositories/RssFeedCollectionRepository';
-import { RSSFeedRepository } from '../../infrastructure/repositories/RSSFeedRepository';
 import { CreateRSSFeedDTO, UpdateRSSFeedDTO } from '../dtos/RSSFeedDTO';
-import { IUseCase } from '../interfaces/IUseCase';
+import { NotFoundException } from '../exception/NotFoundException';
 
 import { ParseFeedUseCase } from './ParseFeedUseCase';
 
 export class RSSFeedUseCases
   implements IUseCase<RSSFeed, CreateRSSFeedDTO, UpdateRSSFeedDTO>
 {
-  private readonly repository: RSSFeedRepository;
-  private readonly collectionRepository: RssFeedCollectionRepository;
-  private readonly parseFeedUseCase: ParseFeedUseCase;
-
   constructor(
-    repository: RSSFeedRepository,
-    collectionRepository: RssFeedCollectionRepository,
-    parseFeedUseCase: ParseFeedUseCase,
-  ) {
-    this.repository = repository;
-    this.collectionRepository = collectionRepository;
-    this.parseFeedUseCase = parseFeedUseCase;
-  }
+    private readonly repository: IRepository<RSSFeed>,
+    private readonly collectionRepository: IRepository<RSSFeedCollection>,
+    private readonly parseFeedUseCase: ParseFeedUseCase,
+  ) {}
 
   async getAll(): Promise<RSSFeed[]> {
     return await this.repository.getAll();
@@ -59,10 +52,9 @@ export class RSSFeedUseCases
     const feed = await this.repository.getOneById(id);
 
     if (!feed) {
-      const errorMessage =
-        'Une erreur est survenu lors de la mise à jour à jour du flux RSS';
-      logger.error(errorMessage);
-      throw new Error(errorMessage);
+      throw new NotFoundException(
+        'Une erreur est survenu lors de la mise à jour à jour du flux RSS',
+      );
     }
 
     if (title !== undefined) {

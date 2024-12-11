@@ -1,3 +1,5 @@
+// /src/domain/interfaces/IRepository.ts
+
 import { IEntity } from './IEntity';
 
 export interface IRepository<T extends IEntity> {

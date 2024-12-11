@@ -1,8 +1,8 @@
 // src/infrastructure/Repositories/ArticleCollectionRepository.ts
 import { Repository } from 'typeorm';
 
-import { IRepository } from '../../application/interfaces/IRepository';
 import { ArticleCollection } from '../../domain/entities/ArticleCollection';
+import { IRepository } from '../../domain/interfaces/IRepository';
 import { AppDataSource } from '../database/dataSource';
 import { ArticleCollectionEntity } from '../entities/ArticleCollectionEntity';
 import logger from '../logger/logger';

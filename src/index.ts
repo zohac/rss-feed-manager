@@ -4,6 +4,8 @@ import cors from 'cors';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 
+import { ActionExecutor } from './application/executor/ActionExecutor';
+import { ActionUseCases } from './application/usecases/ActionUseCases';
 import { AIAgentUseCases } from './application/usecases/AIAgentUseCases';
 import { AIAnalysisUseCase } from './application/usecases/AIAnalysisUseCase';
 import { ArticleCollectionUseCases } from './application/usecases/ArticleCollectionUseCases';
@@ -15,6 +17,7 @@ import { config } from './infrastructure/config/config';
 import { AppDataSource } from './infrastructure/database/dataSource';
 import { AIServiceFactory } from './infrastructure/factories/AIServiceFactory';
 import logger from './infrastructure/logger/logger';
+import { ActionRepository } from './infrastructure/repositories/ActionRepository';
 import { AIAgentRepository } from './infrastructure/repositories/AIAgentRepository';
 import { AIAnalysisRepository } from './infrastructure/repositories/AIAnalysisRepository';
 import { ArticleCollectionRepository } from './infrastructure/repositories/ArticleCollectionRepository';
@@ -22,6 +25,7 @@ import { ArticleRepository } from './infrastructure/repositories/ArticleReposito
 import { RssFeedCollectionRepository } from './infrastructure/repositories/RssFeedCollectionRepository';
 import { RSSFeedRepository } from './infrastructure/repositories/RSSFeedRepository';
 import { CronService } from './infrastructure/services/CronService';
+import { ActionController } from './presentation/controllers/ActionController';
 import { AIAgentController } from './presentation/controllers/AIAgentController';
 import { AIAnalysisController } from './presentation/controllers/AIAnalysisController';
 import { ArticleCollectionController } from './presentation/controllers/ArticleCollectionController';
@@ -62,6 +66,7 @@ const startServer = async () => {
     const articleRepository = new ArticleRepository();
     const agentRepository = new AIAgentRepository();
     const analysisRepository = new AIAnalysisRepository();
+    const actionRepository = new ActionRepository();
 
     // Instancier les Factory
     const aiServiceFactory = new AIServiceFactory();
@@ -94,6 +99,14 @@ const startServer = async () => {
       agentRepository,
     );
 
+    const actionExecutor = new ActionExecutor(articleUseCases);
+    const actionUseCases = new ActionUseCases(
+      actionExecutor,
+      actionRepository,
+      analysisUseCases,
+      articleCollectionRepository,
+    );
+
     // Instancier les contrôleurs
     const feedController = new RSSFeedController(feedUseCases);
     const rssFeedCollectionController = new RSSFeedCollectionController(
@@ -105,6 +118,7 @@ const startServer = async () => {
     const articleController = new ArticleController(articleUseCases);
     const agentController = new AIAgentController(agentUseCases);
     const analysisController = new AIAnalysisController(analysisUseCases);
+    const actionController = new ActionController(actionUseCases);
 
     // Créer et utiliser les routes
     const router = createRouter(
@@ -114,6 +128,7 @@ const startServer = async () => {
       articleController,
       agentController,
       analysisController,
+      actionController,
     );
     app.use('/api', router);
 
@@ -123,6 +138,7 @@ const startServer = async () => {
       parseFeedUseCase,
       articleUseCases,
       analysisUseCases,
+      actionUseCases,
     );
     cronService.start();
     logger.info('CRON démarré');

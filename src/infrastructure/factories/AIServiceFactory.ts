@@ -1,8 +1,8 @@
 // src/infrastructure/factories/AIServiceFactory.ts
 
-import { IAIService } from '../../application/interfaces/IAIService';
-import { IAIServiceFactory } from '../../application/interfaces/IServiceFactory';
 import { AIAgentProvider } from '../../domain/entities/AIAgent';
+import { IAIService } from '../../domain/interfaces/IAIService';
+import { IAIServiceFactory } from '../../domain/interfaces/IServiceFactory';
 import { config } from '../config/config';
 import { OllamaService } from '../integrations/OllamaService';
 

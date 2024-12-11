@@ -3,17 +3,19 @@
 import { AIAgent } from '../../domain/entities/AIAgent';
 import { AIConfiguration } from '../../domain/entities/AIConfiguration';
 import { Article } from '../../domain/entities/Article';
+import { IArticleRepository } from '../../domain/interfaces/IArticleRepository';
+import { IUseCase } from '../../domain/interfaces/IUseCase';
 import logger from '../../infrastructure/logger/logger';
 import { AIAgentRepository } from '../../infrastructure/repositories/AIAgentRepository';
 import { ArticleRepository } from '../../infrastructure/repositories/ArticleRepository';
 import { CreateAIAgentDTO, UpdateAIAgentDTO } from '../dtos/AIAgentDTO';
-import { IUseCase } from '../interfaces/IUseCase';
+import { NotFoundException } from '../exception/NotFoundException';
 
 export class AIAgentUseCases
   implements IUseCase<AIAgent, CreateAIAgentDTO, UpdateAIAgentDTO>
 {
   private readonly aiAgentRepository: AIAgentRepository;
-  private readonly articleRepository: ArticleRepository;
+  private readonly articleRepository: IArticleRepository;
 
   constructor(
     aiAgentRepository: AIAgentRepository,
@@ -55,10 +57,9 @@ export class AIAgentUseCases
   async update(aiAgentDTO: UpdateAIAgentDTO): Promise<AIAgent> {
     const aiAgent = await this.aiAgentRepository.getOneById(aiAgentDTO.id);
     if (!aiAgent) {
-      const errorMessage =
-        "Un problème est survenu lors de la mise à jour de l'agent IA.";
-      logger.error(errorMessage);
-      throw new Error(errorMessage);
+      throw new NotFoundException(
+        "Un problème est survenu lors de la mise à jour de l'agent IA.",
+      );
     }
 
     if (undefined !== aiAgentDTO?.name) {

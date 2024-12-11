@@ -1,5 +1,6 @@
 // src/domain/interfaces/IBaseCollection.ts
-import { IEntity } from '../../application/interfaces/IEntity';
+
+import { IEntity } from './IEntity';
 
 export interface IBaseCollection extends IEntity {
   id: number | undefined;

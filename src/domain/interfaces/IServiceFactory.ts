@@ -1,6 +1,6 @@
-// src/application/interfaces/IAIServiceFactory.ts
+// src/domain/interfaces/IAIServiceFactory.ts
 
-import { AIAgentProvider } from '../../domain/entities/AIAgent';
+import { AIAgentProvider } from '../entities/AIAgent';
 
 import { IAIService } from './IAIService';
 

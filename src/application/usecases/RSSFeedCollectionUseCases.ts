@@ -1,13 +1,14 @@
 // src/application/usecases/RSSFeedCollectionUseCases.ts
 
 import { RSSFeedCollection } from '../../domain/entities/RSSFeedCollection';
+import { IRepository } from '../../domain/interfaces/IRepository';
+import { IUseCase } from '../../domain/interfaces/IUseCase';
 import logger from '../../infrastructure/logger/logger';
-import { RssFeedCollectionRepository } from '../../infrastructure/repositories/RssFeedCollectionRepository';
 import {
   CreateRssFeedCollectionDTO,
   UpdateRssFeedCollectionDTO,
 } from '../dtos/RSSFeedCollectionDTO';
-import { IUseCase } from '../interfaces/IUseCase';
+import { NotFoundException } from '../exception/NotFoundException';
 
 export class RSSFeedCollectionUseCases
   implements
@@ -17,11 +18,7 @@ export class RSSFeedCollectionUseCases
       UpdateRssFeedCollectionDTO
     >
 {
-  private readonly repository: RssFeedCollectionRepository;
-
-  constructor(repository: RssFeedCollectionRepository) {
-    this.repository = repository;
-  }
+  constructor(private readonly repository: IRepository<RSSFeedCollection>) {}
 
   async getAll(): Promise<RSSFeedCollection[]> {
     return await this.repository.getAll();
@@ -50,10 +47,9 @@ export class RSSFeedCollectionUseCases
     const collection = await this.repository.getOneById(id);
 
     if (!collection) {
-      const errorMessage =
-        'Une erreur est survenu lors de la mise à jour à jour de la collection.';
-      logger.error(errorMessage);
-      throw new Error(errorMessage);
+      throw new NotFoundException(
+        'Une erreur est survenu lors de la mise à jour à jour de la collection.',
+      );
     }
 
     if (undefined !== name) {

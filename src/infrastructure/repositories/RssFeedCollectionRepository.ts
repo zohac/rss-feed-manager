@@ -1,8 +1,8 @@
 // src/infrastructure/Repositories/RSSFeedCollectionRepository.ts
 import { Repository } from 'typeorm';
 
-import { IRepository } from '../../application/interfaces/IRepository';
 import { RSSFeedCollection } from '../../domain/entities/RSSFeedCollection';
+import { IRepository } from '../../domain/interfaces/IRepository';
 import { AppDataSource } from '../database/dataSource';
 import { RSSFeedCollectionEntity } from '../entities/RSSFeedCollectionEntity';
 import logger from '../logger/logger';

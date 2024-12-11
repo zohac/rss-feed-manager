@@ -1,6 +1,7 @@
 // src/services/CronService.ts
 import cron from 'node-cron';
 
+import { ActionUseCases } from '../../application/usecases/ActionUseCases';
 import { AIAnalysisUseCase } from '../../application/usecases/AIAnalysisUseCase';
 import { ArticleUseCases } from '../../application/usecases/ArticleUseCases';
 import { ParseFeedUseCase } from '../../application/usecases/ParseFeedUseCase';
@@ -8,22 +9,13 @@ import { RSSFeedUseCases } from '../../application/usecases/RSSFeedUseCases';
 import logger from '../logger/logger';
 
 export class CronService {
-  private readonly rssFeedUseCases: RSSFeedUseCases;
-  private readonly parseFeedUseCase: ParseFeedUseCase;
-  private readonly articlesUseCase: ArticleUseCases;
-  private readonly analysisUseCase: AIAnalysisUseCase;
-
   constructor(
-    rssFeedUseCases: RSSFeedUseCases,
-    parseFeedUseCase: ParseFeedUseCase,
-    articlesUseCase: ArticleUseCases,
-    analysisUseCase: AIAnalysisUseCase,
-  ) {
-    this.rssFeedUseCases = rssFeedUseCases;
-    this.parseFeedUseCase = parseFeedUseCase;
-    this.articlesUseCase = articlesUseCase;
-    this.analysisUseCase = analysisUseCase;
-  }
+    private readonly rssFeedUseCases: RSSFeedUseCases,
+    private readonly parseFeedUseCase: ParseFeedUseCase,
+    private readonly articlesUseCase: ArticleUseCases,
+    private readonly analysisUseCase: AIAnalysisUseCase,
+    private readonly actionUseCases: ActionUseCases,
+  ) {}
 
   start() {
     // Tâche toutes les 15 minutes pour récupérer les nouveaux articles
@@ -80,6 +72,21 @@ export class CronService {
           "Erreur lors de l'analyse des articles avec les agents IA:",
           error,
         );
+      }
+    });
+
+    // Nouvelle tâche pour analyser les articles avec les agents IA
+    cron.schedule('*/60 * * * *', async () => {
+      logger.info(
+        "'Démarrage de la tâche planifiée pour l'exécution des actions recommandées par les agents IA.'",
+      );
+      try {
+        await this.actionUseCases.executeAllActions();
+        logger.info(
+          'Actions de la tâche planifiée pour toutes les actions sur les articles recommandées par tous les agents IA terminée.',
+        );
+      } catch (error) {
+        logger.error("Erreur lors de l'exécution des actions : ", error);
       }
     });
   }
