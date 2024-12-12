@@ -5,6 +5,7 @@ const tsPlugin = require('@typescript-eslint/eslint-plugin');
 const tsParser = require('@typescript-eslint/parser');
 const prettier = require('eslint-plugin-prettier');
 const importPlugin = require('eslint-plugin-import');
+const jestPlugin = require('eslint-plugin-jest');
 
 module.exports = [
     {
@@ -19,6 +20,7 @@ module.exports = [
             '@typescript-eslint': tsPlugin,
             import: importPlugin,
             prettier: prettier,
+            jest: jestPlugin,
         },
         rules: {
             ...js.configs.recommended.rules,
@@ -46,5 +48,16 @@ module.exports = [
         linterOptions: {
             reportUnusedDisableDirectives: "warn", // ou "error" selon votre préférence
         },
+        overrides: [
+            {
+                files: ['**/__tests__/**/*.ts', '**/*.spec.ts', '**/*.test.ts', 'jest.setup.ts'],
+                env: {
+                    jest: true, // Définir l'environnement Jest uniquement pour les fichiers de test
+                },
+                rules: {
+                    // Vous pouvez ajouter ou ajuster des règles spécifiques pour les tests ici
+                },
+            },
+        ],
     },
 ];

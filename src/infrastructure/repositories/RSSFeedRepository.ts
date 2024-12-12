@@ -2,18 +2,12 @@ import { Repository } from 'typeorm';
 
 import { RSSFeed } from '../../domain/entities/RSSFeed';
 import { IRepository } from '../../domain/interfaces/IRepository';
-import { AppDataSource } from '../database/dataSource';
 import { RSSFeedEntity } from '../entities/RSSFeedEntity';
 import logger from '../logger/logger';
 import { RSSFeedMapper } from '../mappers/RSSFeedMapper';
 
 export class RSSFeedRepository implements IRepository<RSSFeed> {
-  private readonly feedRepository: Repository<RSSFeedEntity>;
-
-  constructor() {
-    // AppDataSource est déjà initialisé ici
-    this.feedRepository = AppDataSource.getRepository(RSSFeedEntity);
-  }
+    constructor(private readonly feedRepository: Repository<RSSFeedEntity>) {}
 
   async getOneById(id: number): Promise<RSSFeed | null> {
     const entity = await this.feedRepository.findOne({

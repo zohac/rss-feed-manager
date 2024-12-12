@@ -4,17 +4,13 @@ import { Repository } from 'typeorm';
 
 import { AIAnalysis } from '../../domain/entities/AIAnalysis';
 import { IAIAnalysisRepository } from '../../domain/interfaces/IAIAnalysisRepository';
-import { AppDataSource } from '../database/dataSource';
 import { AIAnalysisEntity } from '../entities/AIAnalysisEntity';
 import logger from '../logger/logger';
 import { AIAnalysisMapper } from '../mappers/AIAnalysisMapper';
 
 export class AIAnalysisRepository implements IAIAnalysisRepository {
-  private readonly aiAnalysisRepository: Repository<AIAnalysisEntity>;
 
-  constructor() {
-    this.aiAnalysisRepository = AppDataSource.getRepository(AIAnalysisEntity);
-  }
+  constructor(private readonly aiAnalysisRepository: Repository<AIAnalysisEntity>) {}
 
   async getAll(): Promise<AIAnalysis[]> {
     const entities = await this.aiAnalysisRepository.find();

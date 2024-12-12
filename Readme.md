@@ -14,6 +14,7 @@
     - [Installation](#installation)
     - [Configuration](#configuration)
     - [Running the Application](#running-the-application)
+    - [Running Tests](#running-tests)
 - [API Documentation](#api-documentation)
 - [Project Structure](#project-structure)
 - [License](#license)
@@ -25,12 +26,13 @@
 ## Features
 
 - **CRUD Operations**: Manage RSS Feeds, Collections, Articles, and AI Agents.
-- **AI Integration** : Analyze articles using AI agents (e.g., Ollama, ChatGPT).
+- **AI Integration**: Analyze articles using AI agents (e.g., Ollama, ChatGPT).
 - **Flexible Analysis Configuration**: Customizable AI prompts and roles for agents.
 - **Data Validation**: Ensures data integrity using class-validator.
 - **Error Handling**: Centralized error handling for robust and predictable API behavior.
 - **API Documentation**: Interactive API documentation via Swagger UI.
-- **Clean Architecture** : Ensures separation of concerns for better maintainability and scalability.
+- **Clean Architecture**: Ensures separation of concerns for better maintainability and scalability.
+- **Testing**: Includes unit and E2E tests to ensure robustness and reliability.
 
 ## Technologies Used
 
@@ -42,6 +44,7 @@
 - **Validation:** class-validator, class-transformer
 - **Documentation:** Swagger UI
 - **Environment Management:** dotenv
+- **Testing Frameworks:** Jest, Supertest
 
 ## Getting Started
 
@@ -59,13 +62,13 @@ Ensure you have the following installed on your machine:
 1. **Clone the Repository**
 
     ```bash
-   git clone https://github.com/votre-utilisateur/rss-feed-manager.git
-   cd rss-feed-manager
+    git clone https://github.com/your-username/rss-feed-manager.git
+    cd rss-feed-manager
     ```
 
 2. **Install Dependencies**
 
-    Using pnpm:
+   Using pnpm:
 
     ```bash
     pnpm install
@@ -73,22 +76,34 @@ Ensure you have the following installed on your machine:
 
 ### Configuration
 
-1. Environment Variables
+1. **Environment Variables**
 
-    Create a .env file in the root directory of the project to configure environment-specific settings.
+    Create a `.env` file in the root directory of the project to configure environment-specific settings. You should have separate `.env` files for each environment:
+
+    * `.env`: For production.
+
+    * `.env.test`: For testing.
+
+    * `.env.development`: For development.
+
+    Use the provided .`env.dist` file as a template for your environment files.
+
+    Example `.env` file:
 
     ```env
-   PORT=3000
-   DATABASE_PATH=./rssfeeds.sqlite
-   OLLAMA_BASE_URL=http://localhost:11434
+    PORT=3000
+    DATABASE_TYPE=sqlite
+    #DATABASE_PATH=:memory: #For Testing
+    DATABASE_PATH=./rssfeeds.sqlite
+    OLLAMA_BASE_URL=http://localhost:11434
     ```
-    
-   * PORT: The port on which the server will run. Default is 3000.
-   * DATABASE_PATH: Path to the SQLite database file. Default is ./rssfeeds.sqlite.
 
-2. TypeScript Configuration
+    - `PORT`: The port on which the server will run. Default is 3000.
+    - `DATABASE_PATH`: Path to the SQLite database file. Default is `./rssfeeds.sqlite`.
 
-    Ensure your tsconfig.json includes the following settings:
+2. **TypeScript Configuration**
+
+   Ensure your `tsconfig.json` includes the following settings:
 
     ```json
     {
@@ -105,43 +120,69 @@ Ensure you have the following installed on your machine:
         "module": "Node16",
         "rootDir": "./src",
         "resolveJsonModule": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "types": ["node", "jest"],
+        "isolatedModules": true
       },
-      "exclude": ["node_modules/"],
-      "include": ["src/**/*.ts", "test/**/*.ts"]
+      "exclude": ["node_modules/", "dist/"],
+      "include": ["src/**/*.ts"]
     }
+
     ```
 
 ### Running the Application
 
-1. Start the Development Server
+1. **Start the Development Server**
 
     ```bash
     pnpm start
     ```
    This command uses ts-node to run the TypeScript application directly.
 
-    OR
+   OR
 
     ```bash
     pnpm dev
     ```
 
-2. Build for Production
+2. **Build for Production**
 
-    To compile the TypeScript code into JavaScript:
+   To compile the TypeScript code into JavaScript:
 
     ```bash
     pnpm run build
     ```
 
-    Then, to run the compiled code:
+   Then, to run the compiled code:
 
     ```bash
     pnpm run prod
     ```
 
+### Running Tests
+
+This project includes unit and E2E tests to ensure code reliability.
+
+1. **Run All Tests**
+
+    ```bash
+    pnpm test
+    ```
+
+2. **Run Tests in Watch Mode**
+
+    ```bash
+    pnpm test:watch
+    ```
+
+3. **Generate Test Coverage Report**
+
+    ```bash
+    pnpm test:coverage
+    ```
+
 ## API Documentation
+
 The API is documented using Swagger. Once the server is running, you can access the interactive API documentation at:
 
 ```
@@ -165,6 +206,7 @@ rss-feed-manager/
 │   │   │   ├── RSSFeedCollectionDTO.ts
 │   │   │   └── RSSFeedDTO.ts
 │   │   ├── exception/
+│   │   │   ├── NotANumberException.ts
 │   │   │   └── NotFoundException.ts
 │   │   ├── executors/
 │   │   │   └── ActionExecutor.ts
@@ -198,9 +240,10 @@ rss-feed-manager/
 │   │       └── IUseCases.ts
 │   ├── infrastructure/
 │   │   ├── Config/
-│   │   │   ├── config.ts
+│   │   │   └── config.ts
 │   │   ├── database/
-│   │   │   └── dataSource.ts
+│   │   │   ├── dataSource.ts
+│   │   │   └── testDataSource.ts
 │   │   ├── entities/
 │   │   │   ├── ActionEntity.ts
 │   │   │   ├── AIAgentEntity.ts
@@ -260,41 +303,50 @@ rss-feed-manager/
 │   │       ├── feeds.ts
 │   │       └── index.ts
 │   ├── utils/
+│   │   ├── NumberUtils.ts
 │   │   └── stringUtils.ts
 │   ├── index.ts
 │   └── swagger.json
-├── .env
+├── test/
+│   └── e2e/
+│       └── RSSFeedCollectionController.e2e.spec.ts
 ├── .env.dist
 ├── .gitignore
 ├── .prettierignore
 ├── .prettierrc
 ├── eslint.config.js
+├── jest.config.js
+├── jest.setup.js
 ├── LICENCE
 ├── nodemon.json
+├── ormconfig.test.json
 ├── package.json
 ├── pnpm-lock.yaml
 ├── Readme.md
-└── tsconfig.json
+├── tsconfig.json
+└── tsconfig.test.json
 ```
 
 ### Description of Key Directories and Files
 
-* `application/`: Contains use cases, DTOs, and interfaces defining the business logic and contracts.
-* `domain/`: Core entities representing the business models.
-  * `entities/`: Domain entities representing the core business objects.
-* `infrastructure/`:
-  * `database/`: TypeORM DataSource configuration.
-  * `entities/`: TypeORM entity definitions for database interaction.
-  * `integrations/`: External service integrations (e.g., OllamaService).
-  * `mappers/`: Transformations between domain and database entities.
-  * `repositories/`: Data access layer interfacing with TypeORM.
-* `services/`: Application-specific services (e.g., CronService).
-  * `presentation/`:
-  * `controllers/`: Express controllers handling HTTP requests and responses.
-  * `middlewares/`: Express middleware for error handling and request validation.
-  * `routes/`: Route definitions organized by feature.
-* `utils/`: General utility functions (e.g., string manipulation).
-* `index.ts`: Application entry point, initializing the server and dependencies.
+- `application/`: Contains use cases, DTOs, and interfaces defining the business logic and contracts.
+- `domain/`: Core entities representing the business models.
+    - `entities/`: Domain entities representing the core business objects.
+- `infrastructure/`:
+    - `config/`: Configuration settings and utilities.
+    - `database/`: TypeORM DataSource configuration.
+    - `entities/`: TypeORM entity definitions for database interaction.
+    - `integrations/`: External service integrations (e.g., OllamaService).
+    - `mappers/`: Transformations between domain and database entities.
+    - `repositories/`: Data access layer interfacing with TypeORM.
+    - `services/`: Application-specific services (e.g., CronService).
+- `presentation/`:
+    - `controllers/`: Express controllers handling HTTP requests and responses.
+    - `middlewares/`: Express middleware for error handling and request validation.
+    - `routes/`: Route definitions organized by feature.
+- `utils/`: General utility functions (e.g., string manipulation).
+- `test/`: Includes E2E tests.
+- `index.ts`: Application entry point, initializing the server and dependencies.
 
 ## License
 

@@ -4,17 +4,12 @@ import { Repository } from 'typeorm';
 
 import { AIAgent } from '../../domain/entities/AIAgent';
 import { IRepository } from '../../domain/interfaces/IRepository';
-import { AppDataSource } from '../database/dataSource';
 import { AIAgentEntity } from '../entities/AIAgentEntity';
 import logger from '../logger/logger';
 import { AIAgentMapper } from '../mappers/AIAgentMapper';
 
 export class AIAgentRepository implements IRepository<AIAgent> {
-  private readonly aiAgentRepository: Repository<AIAgentEntity>;
-
-  constructor() {
-    this.aiAgentRepository = AppDataSource.getRepository(AIAgentEntity);
-  }
+  constructor(private readonly aiAgentRepository: Repository<AIAgentEntity>) {}
 
   async create(aiAgent: AIAgent): Promise<AIAgent> {
     const aiAgentEntity = AIAgentMapper.toEntity(aiAgent);

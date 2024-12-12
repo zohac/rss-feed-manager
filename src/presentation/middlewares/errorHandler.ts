@@ -11,13 +11,17 @@ export const errorHandler = (
   logger.error(err.stack);
 
   switch (err.name) {
+    case 'NotANumberException':
+      return res
+        .status(400)
+        .json({ message: 'Bad Request', error: err.message });
+
     case 'NotFoundException':
-      res
+      return res
         .status(404)
         .json({ message: 'Resource not found', error: err.message });
-      break;
 
     default:
-      res.status(500).json({ message: 'Erreur serveur', error: err.message });
+      return res.status(500).json({ message: 'Erreur serveur', error: err.message });
   }
 };

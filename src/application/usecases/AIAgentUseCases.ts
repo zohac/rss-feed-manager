@@ -5,7 +5,6 @@ import { AIConfiguration } from '../../domain/entities/AIConfiguration';
 import { Article } from '../../domain/entities/Article';
 import { IArticleRepository } from '../../domain/interfaces/IArticleRepository';
 import { IUseCase } from '../../domain/interfaces/IUseCase';
-import logger from '../../infrastructure/logger/logger';
 import { AIAgentRepository } from '../../infrastructure/repositories/AIAgentRepository';
 import { ArticleRepository } from '../../infrastructure/repositories/ArticleRepository';
 import { CreateAIAgentDTO, UpdateAIAgentDTO } from '../dtos/AIAgentDTO';

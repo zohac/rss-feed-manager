@@ -3,7 +3,6 @@
 import { RSSFeedCollection } from '../../domain/entities/RSSFeedCollection';
 import { IRepository } from '../../domain/interfaces/IRepository';
 import { IUseCase } from '../../domain/interfaces/IUseCase';
-import logger from '../../infrastructure/logger/logger';
 import {
   CreateRssFeedCollectionDTO,
   UpdateRssFeedCollectionDTO,

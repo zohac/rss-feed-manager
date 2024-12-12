@@ -3,7 +3,6 @@ import { Repository } from 'typeorm';
 
 import { ArticleCollection } from '../../domain/entities/ArticleCollection';
 import { IRepository } from '../../domain/interfaces/IRepository';
-import { AppDataSource } from '../database/dataSource';
 import { ArticleCollectionEntity } from '../entities/ArticleCollectionEntity';
 import logger from '../logger/logger';
 import { ArticleCollectionMapper } from '../mappers/ArticleCollectionMapper';
@@ -11,13 +10,7 @@ import { ArticleCollectionMapper } from '../mappers/ArticleCollectionMapper';
 export class ArticleCollectionRepository
   implements IRepository<ArticleCollection>
 {
-  private readonly collectionRepository: Repository<ArticleCollectionEntity>;
-
-  constructor() {
-    this.collectionRepository = AppDataSource.getRepository(
-      ArticleCollectionEntity,
-    );
-  }
+  constructor(private readonly collectionRepository: Repository<ArticleCollectionEntity>) {}
 
   async getAll(): Promise<ArticleCollection[]> {
     const entities = await this.collectionRepository.find({

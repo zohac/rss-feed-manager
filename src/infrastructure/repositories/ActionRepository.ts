@@ -4,17 +4,13 @@ import { Repository } from 'typeorm';
 
 import { Action } from '../../domain/entities/Action';
 import { IRepository } from '../../domain/interfaces/IRepository';
-import { AppDataSource } from '../database/dataSource';
 import { ActionEntity } from '../entities/ActionEntity';
 import logger from '../logger/logger';
 import { ActionMapper } from '../mappers/ActionMapper';
 
 export class ActionRepository implements IRepository<Action> {
-  private readonly repository: Repository<ActionEntity>;
 
-  constructor() {
-    this.repository = AppDataSource.getRepository(ActionEntity);
-  }
+  constructor(private readonly repository: Repository<ActionEntity>) {}
 
   async getAll(): Promise<Action[]> {
     const entities = await this.repository.find();

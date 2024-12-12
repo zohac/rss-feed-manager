@@ -8,6 +8,7 @@ import {
   UpdateRssFeedCollectionDTO,
 } from '../../application/dtos/RSSFeedCollectionDTO';
 import { RSSFeedCollectionUseCases } from '../../application/usecases/RSSFeedCollectionUseCases';
+import { NumberUtils } from '../../utils/NumberUtils';
 
 export class RSSFeedCollectionController {
   private readonly useCases: RSSFeedCollectionUseCases;
@@ -35,12 +36,15 @@ export class RSSFeedCollectionController {
     next: NextFunction,
   ) => {
     try {
-      const collection = await this.useCases.getOneById(Number(req.params.id));
+      const id = Number(req.params.id);
+      NumberUtils.validateNumber(id);
+
+      const collection = await this.useCases.getOneById(id);
       if (collection) {
-        res.json(collection);
-      } else {
-        res.status(404).json({ message: 'Collection non trouvée' });
+        return res.json(collection);
       }
+
+      return res.status(404).json({ message: 'Collection non trouvée' });
     } catch (error) {
       next(error);
     }
@@ -77,6 +81,7 @@ export class RSSFeedCollectionController {
         ...req.body,
       });
       const errors = await validate(dto);
+
       if (errors.length > 0) {
         return res.status(400).json({ errors });
       }
@@ -95,6 +100,13 @@ export class RSSFeedCollectionController {
   ) => {
     try {
       const id = Number(req.params.id);
+      NumberUtils.validateNumber(id);
+
+      const collection = await this.useCases.getOneById(id);
+      if (!collection) {
+        return res.status(404).json({ message: 'Resource not found' });
+      }
+
       await this.useCases.delete(id);
       res.status(204).send();
     } catch (error) {

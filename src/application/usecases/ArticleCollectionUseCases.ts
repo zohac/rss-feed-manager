@@ -2,7 +2,6 @@
 import { ArticleCollection } from '../../domain/entities/ArticleCollection';
 import { IRepository } from '../../domain/interfaces/IRepository';
 import { IUseCase } from '../../domain/interfaces/IUseCase';
-import logger from '../../infrastructure/logger/logger';
 import { ArticleCollectionRepository } from '../../infrastructure/repositories/ArticleCollectionRepository';
 import {
   CreateArticleCollectionDTO,

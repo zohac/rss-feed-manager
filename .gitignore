@@ -1,5 +1,7 @@
 ### dotenv template
 .env
+.env.development
+.env.test
 
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -281,4 +283,21 @@ Temporary Items
 .apdisk
 
 .husky
+
+# Sqlite file
 /rssfeeds.sqlite
+/rssfeeds-test.sqlite
+
+# Jest
+dist-test
+
+# Ignore les fichiers compilés TypeScript dans les répertoires de tests
+test/**/*.js
+test/**/*.js.map
+
+# Ignore les répertoires de sortie
+dist/
+coverage/
+
+#sonarcube
+/sonar-project.properties

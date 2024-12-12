@@ -3,7 +3,6 @@ import { Repository } from 'typeorm';
 
 import { RSSFeedCollection } from '../../domain/entities/RSSFeedCollection';
 import { IRepository } from '../../domain/interfaces/IRepository';
-import { AppDataSource } from '../database/dataSource';
 import { RSSFeedCollectionEntity } from '../entities/RSSFeedCollectionEntity';
 import logger from '../logger/logger';
 import { RSSFeedCollectionMapper } from '../mappers/RSSFeedCollectionMapper';
@@ -11,13 +10,7 @@ import { RSSFeedCollectionMapper } from '../mappers/RSSFeedCollectionMapper';
 export class RssFeedCollectionRepository
   implements IRepository<RSSFeedCollection>
 {
-  private readonly collectionRepository: Repository<RSSFeedCollectionEntity>;
-
-  constructor() {
-    this.collectionRepository = AppDataSource.getRepository(
-      RSSFeedCollectionEntity,
-    );
-  }
+  constructor(private readonly collectionRepository: Repository<RSSFeedCollectionEntity>) {}
 
   async getAll(): Promise<RSSFeedCollection[]> {
     const entities = await this.collectionRepository.find({

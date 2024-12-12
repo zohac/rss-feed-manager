@@ -4,17 +4,11 @@ import { LessThan, Repository } from 'typeorm';
 import { NotFoundException } from '../../application/exception/NotFoundException';
 import { Article, ArticleSourceType } from '../../domain/entities/Article';
 import { IArticleRepository } from '../../domain/interfaces/IArticleRepository';
-import { AppDataSource } from '../database/dataSource';
 import { ArticleEntity } from '../entities/ArticleEntity';
-import logger from '../logger/logger';
 import { ArticleMapper } from '../mappers/ArticleMapper';
 
 export class ArticleRepository implements IArticleRepository {
-  private readonly articleRepository: Repository<ArticleEntity>;
-
-  constructor() {
-    this.articleRepository = AppDataSource.getRepository(ArticleEntity);
-  }
+  constructor(private readonly articleRepository: Repository<ArticleEntity>) {}
 
   async create(article: Article): Promise<Article> {
     const articleEntity = ArticleMapper.toEntity(article);
