@@ -9,8 +9,9 @@ import logger from '../logger/logger';
 import { AIAnalysisMapper } from '../mappers/AIAnalysisMapper';
 
 export class AIAnalysisRepository implements IAIAnalysisRepository {
-
-  constructor(private readonly aiAnalysisRepository: Repository<AIAnalysisEntity>) {}
+  constructor(
+    private readonly aiAnalysisRepository: Repository<AIAnalysisEntity>,
+  ) {}
 
   async getAll(): Promise<AIAnalysis[]> {
     const entities = await this.aiAnalysisRepository.find();

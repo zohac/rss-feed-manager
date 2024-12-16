@@ -9,7 +9,6 @@ import logger from '../logger/logger';
 import { ActionMapper } from '../mappers/ActionMapper';
 
 export class ActionRepository implements IRepository<Action> {
-
   constructor(private readonly repository: Repository<ActionEntity>) {}
 
   async getAll(): Promise<Action[]> {

@@ -19,28 +19,33 @@ export const PRODUCTION = NODE_ENV === 'production';
 export const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME ?? 'localhost';
 export const SERVER_PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 
-enum databaseType { SQLITE = 'sqlite' }
+enum databaseType {
+  SQLITE = 'sqlite',
+}
 
 // Configuration de la base de données
 export const DATABASE = () => {
   if ('sqlite' === process.env.DATABASE_TYPE) {
     return {
       type: process.env.DATABASE_TYPE as databaseType,
-      database: (process.env.DATABASE_PATH ?? './rssfeeds.sqlite'),
+      database: process.env.DATABASE_PATH ?? './rssfeeds.sqlite',
       synchronize: TEST || DEVELOPMENT, // Toujours synchroniser en test
       logging: DEVELOPMENT && !TEST, // Activer le logging en développement mais pas en test
       entities: [path.resolve(__dirname, '../entities/*.ts')],
-    }
+    };
   }
 
-  throw new Error('Base de donnée inconnu pour la configuration, corriger vote fichier .env')
+  throw new Error(
+    'Base de donnée inconnu pour la configuration, corriger vote fichier .env',
+  );
 };
 
 // Default AI Prompt
 export const DEFAULT_ANALYSIS_PROMPT = `You are an AI content analyzer. Analyze the following article and respond with 'true' if it's about artificial intelligence, machine learning, or related technologies, and 'false' otherwise. Only respond with true or false. ### Title: {{title}} --- Content: {{description}} ### Only respond with true or false, it's very important.`;
 
 // OLLAMA Configuration
-export const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434';
+export const OLLAMA_BASE_URL =
+  process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434';
 
 export const config = {
   environment: {

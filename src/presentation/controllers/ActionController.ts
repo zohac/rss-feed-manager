@@ -6,6 +6,7 @@ import { NextFunction, Request, Response } from 'express';
 import { NotFoundException } from '../../application/exception/NotFoundException';
 import { ActionUseCases } from '../../application/usecases/ActionUseCases';
 import logger from '../../infrastructure/logger/logger';
+import { NumberUtils } from '../../utils/NumberUtils';
 import { ActionDTOFactory } from '../factories/ActionDTOFactory';
 
 export class ActionController {
@@ -24,8 +25,9 @@ export class ActionController {
   getOneAction = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
-      const action = await this.useCases.getOneById(id);
+      NumberUtils.validateNumber(id);
 
+      const action = await this.useCases.getOneById(id);
       if (!action) {
         throw new NotFoundException('Action non trouvé');
       }
@@ -51,10 +53,12 @@ export class ActionController {
     }
   };
 
-  // Mettre à jour un article (isRead, isFavorite, etc.)
+  // Mettre à jour une Action
   updateAction = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
+      NumberUtils.validateNumber(id);
+
       const data = { id, ...req.body };
 
       const dto = ActionDTOFactory.update(data);
@@ -73,8 +77,14 @@ export class ActionController {
   deleteAction = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
-      await this.useCases.delete(id);
+      NumberUtils.validateNumber(id);
 
+      const action = await this.useCases.getOneById(id);
+      if (!action) {
+        return res.status(404).json({ message: 'Resource not found' });
+      }
+
+      await this.useCases.delete(id);
       res.status(204).send();
     } catch (error) {
       next(error);

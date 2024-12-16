@@ -10,7 +10,9 @@ import { ArticleCollectionMapper } from '../mappers/ArticleCollectionMapper';
 export class ArticleCollectionRepository
   implements IRepository<ArticleCollection>
 {
-  constructor(private readonly collectionRepository: Repository<ArticleCollectionEntity>) {}
+  constructor(
+    private readonly collectionRepository: Repository<ArticleCollectionEntity>,
+  ) {}
 
   async getAll(): Promise<ArticleCollection[]> {
     const entities = await this.collectionRepository.find({

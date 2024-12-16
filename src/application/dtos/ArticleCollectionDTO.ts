@@ -10,6 +10,7 @@ import {
 
 export class CreateArticleCollectionDTO {
   @IsString()
+  @IsNotEmpty()
   name!: string;
 
   @IsOptional()
@@ -24,6 +25,7 @@ export class UpdateArticleCollectionDTO {
 
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   name?: string;
 
   @IsOptional()

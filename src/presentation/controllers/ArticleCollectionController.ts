@@ -8,13 +8,10 @@ import {
   UpdateArticleCollectionDTO,
 } from '../../application/dtos/ArticleCollectionDTO';
 import { ArticleCollectionUseCases } from '../../application/usecases/ArticleCollectionUseCases';
+import { NumberUtils } from '../../utils/NumberUtils';
 
 export class ArticleCollectionController {
-  private readonly useCases: ArticleCollectionUseCases;
-
-  constructor(useCases: ArticleCollectionUseCases) {
-    this.useCases = useCases;
-  }
+  constructor(private readonly useCases: ArticleCollectionUseCases) {}
 
   getAllCollections = async (
     req: Request,
@@ -35,13 +32,15 @@ export class ArticleCollectionController {
     next: NextFunction,
   ) => {
     try {
-      const collection = await this.useCases.getOneById(Number(req.params.id));
+      const id = Number(req.params.id);
+      NumberUtils.validateNumber(id);
 
+      const collection = await this.useCases.getOneById(id);
       if (collection) {
-        res.json(collection);
-      } else {
-        res.status(404).json({ message: 'Collection non trouvée' });
+        return res.json(collection);
       }
+
+      res.status(404).json({ message: 'Collection non trouvée' });
     } catch (error) {
       next(error);
     }
@@ -78,6 +77,7 @@ export class ArticleCollectionController {
         ...req.body,
       });
       const errors = await validate(dto);
+
       if (errors.length > 0) {
         return res.status(400).json({ errors });
       }
@@ -96,6 +96,13 @@ export class ArticleCollectionController {
   ) => {
     try {
       const id = Number(req.params.id);
+      NumberUtils.validateNumber(id);
+
+      const collection = await this.useCases.getOneById(id);
+      if (!collection) {
+        return res.status(404).json({ message: 'Resource not found' });
+      }
+
       await this.useCases.delete(id);
       res.status(204).send();
     } catch (error) {

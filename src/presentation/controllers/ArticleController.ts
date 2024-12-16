@@ -9,6 +9,7 @@ import {
 } from '../../application/dtos/ArticleDTO';
 import { ArticleUseCases } from '../../application/usecases/ArticleUseCases';
 import { ArticleSourceType } from '../../domain/entities/Article';
+import { NumberUtils } from '../../utils/NumberUtils';
 
 export class ArticleController {
   private readonly useCases: ArticleUseCases;
@@ -44,9 +45,14 @@ export class ArticleController {
   getArticle = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
-      const articles = await this.useCases.getOneById(id);
+      NumberUtils.validateNumber(id);
 
-      res.json(articles);
+      const article = await this.useCases.getOneById(id);
+      if (article) {
+        return res.json(article);
+      }
+
+      res.status(404).json({ message: 'Article non trouvé' });
     } catch (error) {
       next(error);
     }
@@ -91,8 +97,14 @@ export class ArticleController {
   deleteArticle = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
-      await this.useCases.delete(id);
+      NumberUtils.validateNumber(id);
 
+      const article = await this.useCases.getOneById(id);
+      if (!article) {
+        return res.status(404).json({ message: 'Resource not found' });
+      }
+
+      await this.useCases.delete(id);
       res.status(204).send();
     } catch (error) {
       next(error);

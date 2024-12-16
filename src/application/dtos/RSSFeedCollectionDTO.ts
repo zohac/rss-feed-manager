@@ -1,9 +1,9 @@
 // src/application/dtos/CollectionDTO.ts
 import { IsString, IsOptional, IsNotEmpty, IsNumber } from 'class-validator';
-import { IsNull } from 'typeorm';
 
 export class CreateRssFeedCollectionDTO {
   @IsString()
+  @IsNotEmpty()
   name!: string;
 
   @IsOptional()

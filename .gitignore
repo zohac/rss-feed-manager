@@ -301,3 +301,4 @@ coverage/
 
 #sonarcube
 /sonar-project.properties
+!/.sonar/

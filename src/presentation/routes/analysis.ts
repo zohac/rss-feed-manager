@@ -14,7 +14,7 @@ export const analysisRouter = (
     analysisController.startOneArticleAnalysis,
   );
   router.post('/agent/:agentId', analysisController.startAnalysisByAgent);
-  router.post('/agent/:agentId', analysisController.startAnalysis);
+  router.post('/', analysisController.startAllAnalysis);
   router.get('/', analysisController.getAllAnalysis);
   router.get('/:id', analysisController.getOneAnalysis);
   // router.put('/:id', analysisController.updateAgent);

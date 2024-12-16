@@ -1,8 +1,9 @@
-// test/e2e/RSSFeedCollectionController.e2e.spec.ts
+// tests/e2e/RSSFeedCollectionController.e2e.spec.ts
 import request from 'supertest';
+import { Repository } from 'typeorm';
+
 import app, { configureApp } from '../../src/app';
 import { TestDataSource } from '../../src/infrastructure/database/testDataSource';
-import { Repository } from 'typeorm';
 import { RSSFeedCollectionEntity } from '../../src/infrastructure/entities/RSSFeedCollectionEntity';
 
 describe('RSSFeedCollectionController E2E Tests', () => {
@@ -11,9 +12,7 @@ describe('RSSFeedCollectionController E2E Tests', () => {
   beforeAll(async () => {
     // Configurer l'application (sans réinitialiser TestDataSource)
     await configureApp();
-    repository = TestDataSource.getRepository(
-      RSSFeedCollectionEntity,
-    );
+    repository = TestDataSource.getRepository(RSSFeedCollectionEntity);
   });
 
   // Pas besoin de afterAll ici, car jest.setup.ts le gère
@@ -39,7 +38,10 @@ describe('RSSFeedCollectionController E2E Tests', () => {
       expect(response.body[0]).toHaveProperty('id');
       expect(response.body[0]).toHaveProperty('name', 'Collection 1');
       expect(response.body[1]).toHaveProperty('name', 'Collection 2');
-      expect(response.body[1]).toHaveProperty('description', 'Une collection de flux rss');
+      expect(response.body[1]).toHaveProperty(
+        'description',
+        'Une collection de flux rss',
+      );
     });
 
     it('should return an empty array if no collections exist', async () => {
@@ -54,7 +56,9 @@ describe('RSSFeedCollectionController E2E Tests', () => {
     it('should return a collection by ID', async () => {
       const collection = await repository.save({ name: 'Collection 1' });
 
-      const response = await request(app).get(`/api/collections/feeds/${collection.id}`);
+      const response = await request(app).get(
+        `/api/collections/feeds/${collection.id}`,
+      );
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', collection.id);
@@ -69,7 +73,9 @@ describe('RSSFeedCollectionController E2E Tests', () => {
     });
 
     it('should return 400 for invalid ID format', async () => {
-      const response = await request(app).get('/api/collections/feeds/invalid-id');
+      const response = await request(app).get(
+        '/api/collections/feeds/invalid-id',
+      );
 
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty('message', 'Bad Request');
@@ -169,7 +175,9 @@ describe('RSSFeedCollectionController E2E Tests', () => {
     it('should delete an existing collection', async () => {
       const collection = await repository.save({ name: 'To Be Deleted' });
 
-      const response = await request(app).delete(`/api/collections/feeds/${collection.id}`);
+      const response = await request(app).delete(
+        `/api/collections/feeds/${collection.id}`,
+      );
 
       expect(response.status).toBe(204);
       expect(response.body).toEqual({});
@@ -187,7 +195,9 @@ describe('RSSFeedCollectionController E2E Tests', () => {
     });
 
     it('should return 400 for invalid ID format', async () => {
-      const response = await request(app).delete('/api/collections/feeds/invalid-id');
+      const response = await request(app).delete(
+        '/api/collections/feeds/invalid-id',
+      );
 
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty('message', 'Bad Request');

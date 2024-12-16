@@ -10,6 +10,7 @@ import {
   CreateAssignToCollectionActionDTO,
   UpdateAssignToCollectionActionDTO,
 } from '../../application/dtos/AssignToCollectionActionDTO';
+import { ValidationException } from '../../application/exception/ValidationException';
 import { ActionType } from '../../domain/entities/Action';
 
 // On importe les DTO depuis la couche application
@@ -26,7 +27,7 @@ export class ActionDTOFactory {
         return plainToInstance(CreateAssignToCollectionActionDTO, body);
 
       default:
-        throw new Error(`Type d'action inconnu : ${body.type}`);
+        throw new ValidationException(`Type d'action inconnu : ${body.type}`);
     }
   }
 
@@ -41,7 +42,7 @@ export class ActionDTOFactory {
         return plainToInstance(UpdateAssignToCollectionActionDTO, body);
 
       default:
-        throw new Error(`Type d'action inconnu : ${body.type}`);
+        throw new ValidationException(`Type d'action inconnu : ${body.type}`);
     }
   }
 }

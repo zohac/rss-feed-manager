@@ -10,7 +10,9 @@ import { RSSFeedCollectionMapper } from '../mappers/RSSFeedCollectionMapper';
 export class RssFeedCollectionRepository
   implements IRepository<RSSFeedCollection>
 {
-  constructor(private readonly collectionRepository: Repository<RSSFeedCollectionEntity>) {}
+  constructor(
+    private readonly collectionRepository: Repository<RSSFeedCollectionEntity>,
+  ) {}
 
   async getAll(): Promise<RSSFeedCollection[]> {
     const entities = await this.collectionRepository.find({

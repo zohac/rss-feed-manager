@@ -51,9 +51,7 @@
       "get": {
         "tags": ["RSS Feeds"],
         "summary": "Obtenir un flux RSS par ID",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "responses": {
           "200": {
             "description": "Flux RSS trouvé",
@@ -69,9 +67,7 @@
       "put": {
         "tags": ["RSS Feeds"],
         "summary": "Mettre à jour un flux RSS existant",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "requestBody": {
           "required": true,
           "content": {
@@ -88,9 +84,7 @@
       "delete": {
         "tags": ["RSS Feeds"],
         "summary": "Supprimer un flux RSS",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "responses": {
           "204": { "description": "Flux RSS supprimé" },
           "404": { "description": "Flux RSS non trouvé" }
@@ -142,9 +136,7 @@
       "get": {
         "tags": ["RSS Feeds Collections"],
         "summary": "Obtenir une collection par ID",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "responses": {
           "200": {
             "description": "Collection trouvée",
@@ -160,9 +152,7 @@
       "put": {
         "tags": ["RSS Feeds Collections"],
         "summary": "Mettre à jour une collection existante",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "requestBody": {
           "required": true,
           "content": {
@@ -179,9 +169,7 @@
       "delete": {
         "tags": ["RSS Feeds Collections"],
         "summary": "Supprimer une collection",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "responses": {
           "204": { "description": "Collection supprimée" },
           "404": { "description": "Collection non trouvée" }
@@ -233,9 +221,7 @@
       "get": {
         "tags": ["Articles"],
         "summary": "Obtenir un article par ID",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "responses": {
           "200": {
             "description": "Article trouvé",
@@ -251,9 +237,7 @@
       "put": {
         "tags": ["Articles"],
         "summary": "Mettre à jour un article existant",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "requestBody": {
           "required": true,
           "content": {
@@ -270,9 +254,7 @@
       "delete": {
         "tags": ["Articles"],
         "summary": "Supprimer un article",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "responses": {
           "204": { "description": "Article supprimé" },
           "404": { "description": "Article non trouvé" }
@@ -352,9 +334,7 @@
       "get": {
         "tags": ["AI Agent"],
         "summary": "Obtenir un agent IA par ID",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "responses": {
           "200": {
             "description": "Agent IA trouvé",
@@ -370,9 +350,7 @@
       "put": {
         "tags": ["AI Agent"],
         "summary": "Mettre à jour un agent IA existant",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "requestBody": {
           "required": true,
           "content": {
@@ -389,9 +367,7 @@
       "delete": {
         "tags": ["AI Agent"],
         "summary": "Supprimer un agent IA",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "responses": {
           "204": { "description": "Agent IA supprimé" },
           "404": { "description": "Agent IA non trouvé" }
@@ -438,9 +414,7 @@
       "get": {
         "tags": ["AI Analysis"],
         "summary": "Obtenir une analyse IA par ID",
-        "parameters": [
-          { "$ref": "#/components/parameters/IdParam" }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "responses": {
           "200": {
             "description": "Analyse IA trouvée",
@@ -553,14 +527,20 @@
         "properties": {
           "id": { "type": "integer", "example": 1 },
           "name": { "type": "string", "example": "Technologie" },
-          "description": { "type": "string", "example": "Collection de flux RSS liés à la technologie" }
+          "description": {
+            "type": "string",
+            "example": "Collection de flux RSS liés à la technologie"
+          }
         }
       },
       "CollectionInput": {
         "type": "object",
         "properties": {
           "name": { "type": "string", "example": "Technologie" },
-          "description": { "type": "string", "example": "Collection de flux RSS liés à la technologie" }
+          "description": {
+            "type": "string",
+            "example": "Collection de flux RSS liés à la technologie"
+          }
         },
         "required": ["name"]
       },
@@ -572,13 +552,21 @@
           "link": { "type": "string", "example": "http://exemple.com/article" },
           "description": { "type": "string", "example": "Résumé de l'article" },
           "content": { "type": "string", "example": "Contenu de l'article" },
-          "publicationDate": { "type": "string", "format": "date-time", "example": "2021-01-01T12:00:00Z" },
+          "publicationDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-01-01T12:00:00Z"
+          },
           "isRead": { "type": "boolean", "example": false },
           "isFavorite": { "type": "boolean", "example": false },
           "isArchived": { "type": "boolean", "example": false },
           "isSaved": { "type": "boolean", "example": false },
           "feed": { "$ref": "#/components/schemas/RSSFeed" },
-          "sourceType": { "type": "string", "enum": ["manual", "rss"], "example": "rss" },
+          "sourceType": {
+            "type": "string",
+            "enum": ["manual", "rss"],
+            "example": "rss"
+          },
           "tag": { "type": "string", "example": "tech" }
         }
       },
@@ -589,9 +577,17 @@
           "link": { "type": "string", "example": "http://exemple.com/article" },
           "description": { "type": "string", "example": "Résumé de l'article" },
           "content": { "type": "string", "example": "Contenu de l'article" },
-          "publicationDate": { "type": "string", "format": "date-time", "example": "2021-01-01T12:00:00Z" },
+          "publicationDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-01-01T12:00:00Z"
+          },
           "feedId": { "type": "integer", "example": 1 },
-          "sourceType": { "type": "string", "enum": ["manual", "rss"], "example": "rss" },
+          "sourceType": {
+            "type": "string",
+            "enum": ["manual", "rss"],
+            "example": "rss"
+          },
           "tag": { "type": "string", "example": "tech" }
         },
         "required": ["title", "link"]
@@ -611,9 +607,20 @@
         "properties": {
           "id": { "type": "integer", "example": 1 },
           "name": { "type": "string", "example": "Agent IA 1" },
-          "description": { "type": "string", "example": "Analyseur d'articles technologiques" },
-          "provider": { "type": "string", "enum": ["ollama", "claude"], "example": "ollama" },
-          "role": { "type": "string", "enum": ["ANALYSIS", "SUMMARIZER"], "example": "ANALYSIS" },
+          "description": {
+            "type": "string",
+            "example": "Analyseur d'articles technologiques"
+          },
+          "provider": {
+            "type": "string",
+            "enum": ["ollama", "claude"],
+            "example": "ollama"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["ANALYSIS", "SUMMARIZER"],
+            "example": "ANALYSIS"
+          },
           "configuration": { "$ref": "#/components/schemas/AIConfiguration" }
         }
       },
@@ -621,10 +628,23 @@
         "type": "object",
         "properties": {
           "name": { "type": "string", "example": "Agent IA 1" },
-          "description": { "type": "string", "example": "Analyseur d'articles technologiques" },
-          "provider": { "type": "string", "enum": ["ollama", "claude"], "example": "ollama" },
-          "role": { "type": "string", "enum": ["ANALYSIS", "SUMMARIZER"], "example": "ANALYSIS" },
-          "configuration": { "$ref": "#/components/schemas/AIConfigurationInput" }
+          "description": {
+            "type": "string",
+            "example": "Analyseur d'articles technologiques"
+          },
+          "provider": {
+            "type": "string",
+            "enum": ["ollama", "claude"],
+            "example": "ollama"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["ANALYSIS", "SUMMARIZER"],
+            "example": "ANALYSIS"
+          },
+          "configuration": {
+            "$ref": "#/components/schemas/AIConfigurationInput"
+          }
         },
         "required": ["name", "provider", "role", "configuration"]
       },
@@ -633,7 +653,10 @@
         "properties": {
           "id": { "type": "integer", "example": 1 },
           "model": { "type": "string", "example": "gpt-3.5-turbo" },
-          "prompt": { "type": "string", "example": "Analyse l'article suivant..." },
+          "prompt": {
+            "type": "string",
+            "example": "Analyse l'article suivant..."
+          },
           "stream": { "type": "boolean", "example": false },
           "temperature": { "type": "number", "format": "float", "example": 0.7 }
         }
@@ -642,7 +665,10 @@
         "type": "object",
         "properties": {
           "model": { "type": "string", "example": "gpt-3.5-turbo" },
-          "prompt": { "type": "string", "example": "Analyse l'article suivant..." },
+          "prompt": {
+            "type": "string",
+            "example": "Analyse l'article suivant..."
+          },
           "stream": { "type": "boolean", "example": false },
           "temperature": { "type": "number", "format": "float", "example": 0.7 }
         },
@@ -655,7 +681,11 @@
           "article": { "$ref": "#/components/schemas/Article" },
           "agent": { "$ref": "#/components/schemas/AIAgent" },
           "isRelevant": { "type": "boolean", "example": true },
-          "analysisDate": { "type": "string", "format": "date-time", "example": "2023-10-10T12:00:00Z" }
+          "analysisDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-10-10T12:00:00Z"
+          }
         }
       }
     }

@@ -7,9 +7,9 @@ export class NumberUtils {
     return typeof value === 'number' && Number.isFinite(value);
   }
 
-  static validateNumber(value: any) {
+  static validateNumber(value: any): boolean {
     if (NumberUtils.isNumber(value)) return true;
 
-    throw new NotANumberException("Invalid value");
+    throw new NotANumberException('Invalid value');
   }
 }

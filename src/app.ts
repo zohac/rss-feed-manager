@@ -76,13 +76,27 @@ export const configureApp = async () => {
     }
 
     // Instancier les dépôts après l'initialisation de DataSource
-    const feedRepository = new RSSFeedRepository(dataSource.getRepository(RSSFeedEntity));
-    const collectionRepository = new RssFeedCollectionRepository(dataSource.getRepository(RSSFeedCollectionEntity));
-    const articleCollectionRepository = new ArticleCollectionRepository(dataSource.getRepository(ArticleCollectionEntity));
-    const articleRepository = new ArticleRepository(dataSource.getRepository(ArticleEntity));
-    const agentRepository = new AIAgentRepository(dataSource.getRepository(AIAgentEntity));
-    const analysisRepository = new AIAnalysisRepository(dataSource.getRepository(AIAnalysisEntity));
-    const actionRepository = new ActionRepository(dataSource.getRepository(ActionEntity));
+    const feedRepository = new RSSFeedRepository(
+      dataSource.getRepository(RSSFeedEntity),
+    );
+    const collectionRepository = new RssFeedCollectionRepository(
+      dataSource.getRepository(RSSFeedCollectionEntity),
+    );
+    const articleCollectionRepository = new ArticleCollectionRepository(
+      dataSource.getRepository(ArticleCollectionEntity),
+    );
+    const articleRepository = new ArticleRepository(
+      dataSource.getRepository(ArticleEntity),
+    );
+    const agentRepository = new AIAgentRepository(
+      dataSource.getRepository(AIAgentEntity),
+    );
+    const analysisRepository = new AIAnalysisRepository(
+      dataSource.getRepository(AIAnalysisEntity),
+    );
+    const actionRepository = new ActionRepository(
+      dataSource.getRepository(ActionEntity),
+    );
 
     // Instancier les Factory
     const aiServiceFactory = new AIServiceFactory();

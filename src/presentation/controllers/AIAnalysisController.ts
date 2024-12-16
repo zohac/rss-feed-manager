@@ -38,7 +38,7 @@ export class AIAnalysisController {
     }
   };
 
-  startAnalysis = async (req: Request, res: Response) => {
+  startAllAnalysis = async (req: Request, res: Response) => {
     try {
       const analysis = await this.useCases.analysisAll();
       res.json(analysis);

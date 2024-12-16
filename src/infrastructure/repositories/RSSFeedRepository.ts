@@ -7,7 +7,7 @@ import logger from '../logger/logger';
 import { RSSFeedMapper } from '../mappers/RSSFeedMapper';
 
 export class RSSFeedRepository implements IRepository<RSSFeed> {
-    constructor(private readonly feedRepository: Repository<RSSFeedEntity>) {}
+  constructor(private readonly feedRepository: Repository<RSSFeedEntity>) {}
 
   async getOneById(id: number): Promise<RSSFeed | null> {
     const entity = await this.feedRepository.findOne({

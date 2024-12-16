@@ -48,16 +48,18 @@ module.exports = [
         linterOptions: {
             reportUnusedDisableDirectives: "warn", // ou "error" selon votre préférence
         },
-        overrides: [
-            {
-                files: ['**/__tests__/**/*.ts', '**/*.spec.ts', '**/*.test.ts', 'jest.setup.ts'],
-                env: {
-                    jest: true, // Définir l'environnement Jest uniquement pour les fichiers de test
-                },
-                rules: {
-                    // Vous pouvez ajouter ou ajuster des règles spécifiques pour les tests ici
-                },
-            },
-        ],
+    },
+    {
+        files: ["tests/**/*.ts"],
+        languageOptions: {
+            globals: {
+                it: "readonly",
+                describe: "readonly",
+                expect: "readonly",
+                beforeAll: "readonly",
+                beforeEach: "readonly",
+                afterEach: "readonly",
+            }
+        }
     },
 ];

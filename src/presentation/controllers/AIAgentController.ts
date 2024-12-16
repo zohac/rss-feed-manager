@@ -7,8 +7,10 @@ import {
   CreateAIAgentDTO,
   UpdateAIAgentDTO,
 } from '../../application/dtos/AIAgentDTO';
+import { NotFoundException } from '../../application/exception/NotFoundException';
 import { AIAgentUseCases } from '../../application/usecases/AIAgentUseCases';
 import logger from '../../infrastructure/logger/logger';
+import { NumberUtils } from '../../utils/NumberUtils';
 
 export class AIAgentController {
   private readonly useCases: AIAgentUseCases;
@@ -30,7 +32,12 @@ export class AIAgentController {
   getOneAgent = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
+      NumberUtils.validateNumber(id);
+
       const agent = await this.useCases.getOneById(id);
+      if (!agent) {
+        throw new NotFoundException('Agent non trouvé');
+      }
 
       res.json(agent);
     } catch (error) {
@@ -57,6 +64,8 @@ export class AIAgentController {
   updateAgent = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
+      NumberUtils.validateNumber(id);
+
       const dto = plainToInstance(UpdateAIAgentDTO, { id, ...req.body });
       const errors = await validate(dto);
       if (errors.length > 0) {
@@ -73,8 +82,14 @@ export class AIAgentController {
   deleteAgent = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
-      await this.useCases.delete(id);
+      NumberUtils.validateNumber(id);
 
+      const agent = await this.useCases.getOneById(id);
+      if (!agent) {
+        return res.status(404).json({ message: 'Resource not found' });
+      }
+
+      await this.useCases.delete(id);
       res.status(204).send();
     } catch (error) {
       next(error);

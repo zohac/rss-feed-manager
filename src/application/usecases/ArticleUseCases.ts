@@ -40,8 +40,11 @@ export class ArticleUseCases
       undefined,
       ArticleSourceType.MANUAL,
       undefined,
+      undefined,
       articleDTO.description,
       articleDTO.content,
+      undefined,
+      null,
     );
 
     if (undefined !== articleDTO.collectionId) {

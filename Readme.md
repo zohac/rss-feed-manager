@@ -201,19 +201,22 @@ rss-feed-manager/
 │   │   │   ├── ActionDTO.ts
 │   │   │   ├── AIAgentDTO.ts
 │   │   │   ├── AIConfigurationDTO.ts
+│   │   │   ├── ArticleCollectionDTO.ts
 │   │   │   ├── ArticleDTO.ts
 │   │   │   ├── AssignToCollectionActionDTO.ts
 │   │   │   ├── RSSFeedCollectionDTO.ts
 │   │   │   └── RSSFeedDTO.ts
 │   │   ├── exception/
 │   │   │   ├── NotANumberException.ts
-│   │   │   └── NotFoundException.ts
+│   │   │   ├── NotFoundException.ts
+│   │   │   └── ValidationException.ts
 │   │   ├── executors/
 │   │   │   └── ActionExecutor.ts
 │   │   └── usecases/
 │   │       ├── ActionUseCases.ts
 │   │       ├── AIAgentUseCases.ts
 │   │       ├── AIAnalysisUseCases.ts
+│   │       ├── ArticleCollectionUseCases.ts
 │   │       ├── ArticleUseCases.ts
 │   │       ├── ParseFeedUseCases.ts
 │   │       ├── RSSFeedCollectionUseCases.ts
@@ -225,9 +228,10 @@ rss-feed-manager/
 │   │   │   ├── AIAnalysis.ts
 │   │   │   ├── AIConfiguration.ts
 │   │   │   ├── Article.ts
+│   │   │   ├── ArticleCollection.ts
 │   │   │   ├── AssignToCollectionAction.ts
-│   │   │   ├── RSSFeedCollection.ts
-│   │   │   └── RSSFeed.ts
+│   │   │   ├── RSSFeed.ts
+│   │   │   └── RSSFeedCollection.ts
 │   │   └── interfaces/
 │   │       ├── IActionCommand.ts
 │   │       ├── IAIAnalysisRepository.ts
@@ -305,11 +309,24 @@ rss-feed-manager/
 │   ├── utils/
 │   │   ├── NumberUtils.ts
 │   │   └── stringUtils.ts
+│   ├── app.ts
 │   ├── index.ts
 │   └── swagger.json
-├── test/
-│   └── e2e/
-│       └── RSSFeedCollectionController.e2e.spec.ts
+├── tests/
+│   ├── e2e/
+│   │   ├── ActionController.e2e.spec.ts
+│   │   ├── AIAgentController.e2e.spec.ts
+│   │   ├── ArticleCollectionController.e2e.spec.ts
+│   │   ├── ArticleController.e2e.spec.ts
+│   │   ├── RSSFeedCollectionController.e2e.spec.ts
+│   │   └── RSSFeedController.e2e.spec.ts
+│   └── fixtures/
+│       ├── ActionsFixtures.ts
+│       ├── AIAgentFixtures.ts
+│       ├── ArticleCollectionsFixtures.ts
+│       ├── ArticlesFixtures.ts
+│       ├── RSSFeedCollectionFixtures.ts
+│       └── RSSFeedFixtures.ts
 ├── .env.dist
 ├── .gitignore
 ├── .prettierignore
@@ -345,7 +362,7 @@ rss-feed-manager/
     - `middlewares/`: Express middleware for error handling and request validation.
     - `routes/`: Route definitions organized by feature.
 - `utils/`: General utility functions (e.g., string manipulation).
-- `test/`: Includes E2E tests.
+- `tests/`: Includes E2E tests.
 - `index.ts`: Application entry point, initializing the server and dependencies.
 
 ## License
