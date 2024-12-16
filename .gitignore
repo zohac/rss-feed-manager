@@ -301,4 +301,6 @@ coverage/
 
 #sonarcube
 /sonar-project.properties
-!/.sonar/
+.sonar
+.sonar/.sonar_lock
+.sonar/report-task.txt
